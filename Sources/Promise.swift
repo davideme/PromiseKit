@@ -236,7 +236,9 @@ public class Promise<T> {
         }
     }
     
-    //TODO move to +Properties. Currently here due to Swift link error otherwise.
+    /**
+     @return The value with which this promise was fulfilled; nil if this promise is not fulfilled.
+    */
     public var value: T? {
         switch state.get() {
         case .None:

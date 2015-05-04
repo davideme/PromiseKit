@@ -31,6 +31,8 @@ MUSTDO
 
 * It's really weird that you can't finally after a catch (in Swift), but I'm not sure what to do about it.
 
+* Clean up callers for AnyPromise to Swift call throughs like setUnhandledErrorHandler
+
 POSTRELEASETODO
 ===============
 

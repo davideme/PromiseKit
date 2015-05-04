@@ -287,7 +287,7 @@ typedef void (^PMKBooleanAdapter)(BOOL, NSError *);
  
  If you use it in production code I will literally and honestly cry like a child.
  
- @warning *Important* t safe. It is not safe. It is not safe. It is not safe. It is no
+ @warning T SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NO
  */
 + (instancetype)hang:(AnyPromise *)promise;
 @end
