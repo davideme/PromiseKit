@@ -14,6 +14,12 @@ Goals
 MUSTDO
 ======
 
+* Reconsider excluding dispatch_promise for swift at least, as it makes this pattern possible:
+
+    class Something {
+        lazy var foo = dispatch_promise { return something() }
+    }
+
 * Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
 * Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
 * Fully document all methods in CorePromise

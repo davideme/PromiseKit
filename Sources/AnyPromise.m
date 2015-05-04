@@ -84,9 +84,9 @@ static inline AnyPromise *__catch(AnyPromise *self, BOOL includeCancellation, id
     };
 }
 
-- (AnyPromise *(^)(BOOL, id))catchWithCancellation {
-    return ^(BOOL includeCancellation, id block) {
-        return __catch(self, includeCancellation, block);
+- (AnyPromise *(^)(PMKCatchPolicy, id))catchWithPolicy {
+    return ^(PMKCatchPolicy policy, id block) {
+        return __catch(self, policy == PMKCatchPolicyAllErrors, block);
     };
 }
 
