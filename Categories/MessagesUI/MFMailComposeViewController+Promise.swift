@@ -5,7 +5,7 @@ import UIKit.UIViewController
 /**
  To import this `UIViewController` category:
 
-    pod "PromiseKit/MessagesUI"
+    pod "PromiseKit/MessageUI"
 
  And then in your sources:
 
@@ -13,32 +13,38 @@ import UIKit.UIViewController
 */
 extension UIViewController {
     public func promiseViewController(vc: MFMailComposeViewController, animated: Bool = true, completion:(() -> Void)? = nil) -> Promise<MFMailComposeResult> {
-        let proxy = MFMailComposeViewControllerProxy()
+        let proxy = PMKMailComposeViewControllerDelegate()
+        proxy.retainCycle = proxy
         vc.mailComposeDelegate = proxy
         presentViewController(vc, animated: animated, completion: completion)
         proxy.promise.finally {
-            proxy.description
             vc.dismissViewControllerAnimated(animated, completion: nil)
         }
         return proxy.promise
     }
 }
 
-public let MFOperationCancelled = 1000
-
-private class MFMailComposeViewControllerProxy: NSObject, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
+private class PMKMailComposeViewControllerDelegate: NSObject, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
 
     let (promise, fulfill, reject) = Promise<MFMailComposeResult>.defer()
+    var retainCycle: NSObject?
 
     @objc func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
         if error != nil {
             reject(error)
-        } else if result.value == MFMailComposeResultCancelled.value {
-            var info = [NSObject: AnyObject]()
-            info[NSLocalizedDescriptionKey] = "The operation was canceled"
-            reject(NSError(domain: MFMailComposeErrorDomain, code: MFOperationCancelled, userInfo: info))
         } else {
-            fulfill(result)
+            switch result.value {
+            case MFMailComposeResultFailed.value:
+                var info = [NSObject: AnyObject]()
+                info[NSLocalizedDescriptionKey] = "The attempt to save or send the message was unsuccessful."
+                info[NSUnderlyingErrorKey] = result
+                reject(NSError(domain: PMKErrorDomain, code: PMKOperationFailed, userInfo: info))
+            case MFMailComposeResultCancelled.value:
+                reject(NSError.cancelledError())
+            default:
+                fulfill()
+            }
         }
+        retainCycle = nil
     }
 }

@@ -4,11 +4,11 @@
 /**
  To import the `MKDirections` category:
 
-    pod "PromiseKit/MKDirections"
-
- Or you can import all categories on `MapKit`:
-
     pod "PromiseKit/MapKit"
+
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface MKDirections (PromiseKit)
 

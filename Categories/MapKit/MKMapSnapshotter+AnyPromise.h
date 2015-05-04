@@ -4,11 +4,11 @@
 /**
  To import the `MKSnapshotter` category:
 
-    pod "PromiseKit/MKSnapshotter"
-
- Or you can import all categories on `MapKit`:
-
     pod "PromiseKit/MapKit"
+
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface MKMapSnapshotter (PromiseKit)
 
