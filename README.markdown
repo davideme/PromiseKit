@@ -8,8 +8,9 @@ Goals
 * Promises that can cross objective C and Swift without any compromises to Swift.
 * Even more elegant syntax
 * Easier Swift promises that compromise to the compiler to some extent
-* Better modularity for Carthage with at least a split into two frameworks (won't affect CocoaPods)
+* Better modularity for Carthage where categories are not built into the default xcodeproj framework
 * Higher performance through appropriate zalgo usage
+* Simpler code in the library itself
 
 MUSTDO
 ======
@@ -19,11 +20,16 @@ MUSTDO
     class Something {
         lazy var foo = dispatch_promise { return something() }
     }
+    
+* See if all existing pods that depend on PromiseKit lint against 2’s compatability layer
+* Split out compatability layer into subspec
 
 * Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
-  * Do it properly by actually pressing buttons in simulator. Yes it's fragile but yes it actually tests the categories.
+  * Do it properly by programmatically pressing buttons in simulator. Yes it's fragile but yes it actually tests the categories.
 * Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
 * Fully document all methods in CorePromise
+
+* It's really weird that you can't finally after a catch (in Swift), but I'm not sure what to do about it.
 
 POSTRELEASETODO
 ===============
@@ -46,15 +52,15 @@ NICETODO
 * Use delegate version of NSURLConnection to allow cancellation, allow user to access the NSURLConnection so they can cancel it
 * Should test all designated initializers for each test
 
-DISCUSSION
-==========
-//CONSIDER would be better to have Promise derive AnyPromise as then you could
-// use them interchangeably. Either that or conform to `thennable` like JS promises do
-// but this would lead to autocompletion having a crappy then too
-//EXAMPLE repeat function could just take AnyPromise
-//ALSO since AnyObject is like a generic type for any-object, we would be more like Swift in general and
-// doing the pattern as people would expect
-//NOPE: Thennable would not help with Swift Promises being type-safe which is the whole point
+2 vs 1 differences
+==================
+* Cancellation
+* AnyPromise is objc promise, Promise<T> is Swift promise. PMKPromise is provided for compatability but will be deprecated at 2.1 series and removed in 12 months.
+* join has an extra initial parameter
+* New promise categories, eg. Network Reachability and KVO
+* Exceptions are not caught
+* iOS 7.0 minimum deployment target, OS X minimum is 10.9, but PMK1.5 still works for earlier
+* Promises can bridge between Swift and objc. Still different objects though (so Swift promises can be generic)
 
 
 2 vs 1 RATIONALEs
@@ -95,9 +101,3 @@ Cancellation is only ever triggered either by the user (that explicits chooses t
 The unhandler error handler is still called, but the default unhandled error handler does not log cancellations. Override it if you want them logged or something else.
 
 Recover **always** receives cancellations. It is up to you to detect the error is a cancellation (use the cancelled bool property) and then to decide if the cancellation can be recovered.
-
-
-2 vs 1 differences
-==================
-* Cancellation
-* PMKPromise join has an extra initial parameter
