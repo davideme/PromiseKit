@@ -8,7 +8,17 @@ typedef void (^PMKRejecter)(NSError *);
 #define PMKUnderlyingExceptionKey @"PMKUnderlyingExceptionKey"
 
 
+/**
+ PMKPromise is provided for compatability with PromiseKit 1.x.
+ 
+ It derives AnyPromise but modifies its behaviour subtley:
+ 
+  1) Exceptions are caught in handlers and `new:`.
+  2) `value` returns either resolution not just the fulfillment.
 
+ Also we provide a number of 1.x functions that are not present or
+ have been renamed in PromiseKit 2.
+*/
 @interface PMKPromise (objc)
 
 /**

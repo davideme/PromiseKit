@@ -28,3 +28,8 @@ extern NSString * const PMKErrorDomain;
 #define PMKTaskErrorStandardOutputKey @"PMKTaskErrorStandardOutputKey"
 #define PMKTaskErrorStandardErrorKey @"PMKTaskErrorStandardErrorKey"
 #define PMKTaskErrorExitStatusKey @"PMKTaskErrorExitStatusKey"
+
+typedef NS_ENUM(NSInteger, PMKCatchStyle) {
+    PMKCatchStyleAllErrors,
+    PMKCatchStyleAllErrorsExceptCancellation
+};

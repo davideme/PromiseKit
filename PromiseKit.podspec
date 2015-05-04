@@ -93,6 +93,12 @@ Pod::Spec.new do |s|
     ss.ios.frameworks = 'Photos'
   end
 
+  s.subspec 'QuartzCore' do |ss|
+    ss.source_files = 'Categories/QuartzCore/*'
+    ss.dependency 'PromiseKit/CorePromise'
+    ss.frameworks = 'QuartzCore'
+  end
+
   s.subspec 'Social' do |ss|
     ss.source_files = 'Categories/Social/*'
     ss.dependency 'PromiseKit/CorePromise'
@@ -122,7 +128,7 @@ Pod::Spec.new do |s|
   %w{base Promise Pause Until When Join Hang Zalgo}.each do |name|
     s.subspec name do |ss|
       ss.deprecated = true
-      ss.dependency = 'PromiseKit/CorePromise'
+      ss.dependency 'PromiseKit/CorePromise'
     end
   end
 
@@ -155,7 +161,7 @@ Pod::Spec.new do |s|
       else 'Foundation'
     end
     s.subspec name do |ss|
-      ss.dependency = "PromiseKit/#{framework}"
+      ss.dependency "PromiseKit/#{framework}"
       ss.deprecated = true
     end
   end
@@ -166,18 +172,18 @@ Pod::Spec.new do |s|
 
     ss.subspec 'Promise' do |sss|
       sss.deprecated = true
-      sss.dependency = 'PromiseKit/CorePromise'
+      sss.dependency 'PromiseKit/CorePromise'
     end
     
     ss.subspec 'NSJSONFromData' do |sss|
       sss.deprecated = true
-      sss.dependency = 'PromiseKit/CorePromise'
+      sss.dependency 'PromiseKit/CorePromise'
     end      
 
     %w{CloudKit UIKit CoreLocation MapKit Social StoreKit Foundation NSNotificationCenter Accounts AVFoundation}.each do |name|
-      ss.subspec do |sss|
+      ss.subspec(name) do |sss|
         sss.deprecated = true
-        sss.dependency = "PromiseKit/#{name}"
+        sss.dependency "PromiseKit/#{name}"
       end
     end
 

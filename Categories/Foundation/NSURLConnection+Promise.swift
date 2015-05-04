@@ -112,24 +112,32 @@ extension NSURLConnection {
 import UIKit.UIImage
 
 extension NSURLConnection {
+    /**
+     Makes a GET request to the provided URL.
 
-    public class func GET(url:String) -> Promise<UIImage> {
-        return promise(NSURLRequest(URL:NSURL(string:url)!))
+         NSURLConnection.GET("http://placekitten.com/320/320").then { (img: UIImage) in
+             // you must specify the type for the closure
+         }
+
+     @return A promise that fulfills with the image at the specified URL.
+    */
+    public class func GET(url: String) -> Promise<UIImage> {
+        return promise(NSURLRequest(URL: NSURL(string:url)!))
     }
 
-    public class func GET(url:String, query:[String:String]) -> Promise<UIImage> {
+    public class func GET(url: String, query: [String:String]) -> Promise<UIImage> {
         return promise(OMGHTTPURLRQ.GET(url, query))
     }
 
-    public class func POST(url:String, formData:[String:String]) -> Promise<UIImage> {
+    public class func POST(url: String, formData: [String:String]) -> Promise<UIImage> {
         return promise(OMGHTTPURLRQ.POST(url, formData))
     }
 
-    public class func POST(url:String, JSON json:[String:String]) -> Promise<UIImage> {
+    public class func POST(url: String, JSON json: [String:String]) -> Promise<UIImage> {
         return promise(OMGHTTPURLRQ.POST(url, JSON: json))
     }
 
-    public class func POST(url:String, multipartFormData: OMGMultipartFormData) -> Promise<UIImage> {
+    public class func POST(url: String, multipartFormData: OMGMultipartFormData) -> Promise<UIImage> {
         return promise(OMGHTTPURLRQ.POST(url, multipartFormData))
     }
 

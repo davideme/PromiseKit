@@ -1,7 +1,7 @@
 PromiseKit 2
 ============
 
-This is a laboratory project.
+PromiseKit 2 is readying for release.
 
 Goals
 =====
@@ -9,18 +9,17 @@ Goals
 * Even more elegant syntax
 * Easier Swift promises that compromise to the compiler to some extent
 * Better modularity for Carthage with at least a split into two frameworks (won't affect CocoaPods)
-* Higher performance (though PMK1 has *good* performance already so don't panic)
-
+* Higher performance through appropriate zalgo usage
 
 MUSTDO
 ======
 
-* Should test UIViewController, SLComposeViewController, MFMailViewController etc.
+* Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
 
 * Have to wait for CocoaPods 0.3.7
-* Wait for all pods that depend on PMK to merge your dependency correction PRs
+* Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
 * Offer pre-built binaries of 1.x and 2.x including a static archive for iOS 7 people (if possible). Deprecate 1.x Swift version (remove it even, it was never official)
-* Fully document all methods
+* Fully document all methods on CorePromise
 * Provide example of providing promises for a library (if it's objc, provide AnyPromise, if Swift, then Promise<T>) don't feel obligated to provide both.
 
 NICETODO

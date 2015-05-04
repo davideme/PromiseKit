@@ -5,6 +5,10 @@
 
 typedef void (^PMKResolver)(id);
 
+typedef NS_ENUM(NSInteger, PMKCatchPolicy) {
+    PMKCatchPolicyAllErrors,
+    PMKCatchPolicyAllErrorsExceptCancellation
+};
 
 
 /**
@@ -19,7 +23,7 @@ typedef void (^PMKResolver)(id);
 #ifndef __cplusplus
 - (AnyPromise *(^)(id))catch;
 #endif
-- (AnyPromise *(^)(BOOL, id))catchWithCancellation;
+- (AnyPromise *(^)(PMKCatchPolicy, id))catchWithPolicy;
 
 - (AnyPromise *(^)(dispatch_block_t))finally;
 - (AnyPromise *(^)(dispatch_queue_t, dispatch_block_t))finallyOn;

@@ -7,7 +7,6 @@ public enum CatchPolicy {
     case AllErrorsExceptCancellation
 }
 
-
 /**
  A promise represents the future value of a task.
 
