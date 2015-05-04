@@ -2,23 +2,15 @@ import PromiseKit
 import MessageUI.MFMailComposeViewController
 import UIKit.UIViewController
 
-class MFMailComposeViewControllerProxy: NSObject, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
+/**
+ To import this `UIViewController` category:
 
-    let (promise, fulfill, reject) = Promise<MFMailComposeResult>.defer()
+    pod "PromiseKit/MessagesUI"
 
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
-        if error != nil {
-            reject(error)
-        } else if result.value == MFMailComposeResultCancelled.value {
-            var info = [NSObject: AnyObject]()
-            info[NSLocalizedDescriptionKey] = "The operation was canceled"
-            reject(NSError(domain: MFMailComposeErrorDomain, code: PMKOperationCancelled, userInfo: info))
-        } else {
-            fulfill(result)
-        }
-    }
-}
+ And then in your sources:
 
+    import PromiseKit
+*/
 extension UIViewController {
     public func promiseViewController(vc: MFMailComposeViewController, animated: Bool = true, completion:(() -> Void)? = nil) -> Promise<MFMailComposeResult> {
         let proxy = MFMailComposeViewControllerProxy()
@@ -29,5 +21,24 @@ extension UIViewController {
             vc.dismissViewControllerAnimated(animated, completion: nil)
         }
         return proxy.promise
+    }
+}
+
+public let MFOperationCancelled = 1000
+
+private class MFMailComposeViewControllerProxy: NSObject, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
+
+    let (promise, fulfill, reject) = Promise<MFMailComposeResult>.defer()
+
+    @objc func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        if error != nil {
+            reject(error)
+        } else if result.value == MFMailComposeResultCancelled.value {
+            var info = [NSObject: AnyObject]()
+            info[NSLocalizedDescriptionKey] = "The operation was canceled"
+            reject(NSError(domain: MFMailComposeErrorDomain, code: MFOperationCancelled, userInfo: info))
+        } else {
+            fulfill(result)
+        }
     }
 }

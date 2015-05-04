@@ -1,7 +1,17 @@
 #import <PromiseKit/AnyPromise.h>
 
 /**
- If we can already reach the Internet, resolves immediately,
- otherwise resolves as soon as the Internet is accessible.
+ Resolves as soon as the Internet is accessible. If it is already
+ accessible, resolves immediately.
+
+ To import the `SystemConfiguration` category:
+
+    pod "PromiseKit/SystemConfiguration"
+
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
+
+ @return A void promise that fulfills when the Internet becomes accessible.
 */
 AnyPromise *SCNetworkReachability();

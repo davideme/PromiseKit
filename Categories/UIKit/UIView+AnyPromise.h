@@ -7,52 +7,71 @@
 /**
  To import the `UIView` category:
 
-    pod "PromiseKit/UIView"
-
- Or you can import all categories on `UIKit`:
-
     pod "PromiseKit/UIKit"
 
  Or `UIKit` is one of the categories imported by the umbrella pod:
 
     pod "PromiseKit"
+ 
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface UIView (PromiseKit)
 
 /**
- Returns a new promise that fulfills when the properties changed in the
- provided block have completed animation over `duration` seconds.
+ Animate changes to one or more views using the specified duration.
 
- “Then”s the `BOOL` that the underlying `completion` block receives.
+ @param duration The total duration of the animations, measured in 
+ seconds. If you specify a negative value or 0, the changes are made
+ without animating them.
+
+ @param animations A block object containing the changes to commit to the
+ views.
+
+ @return A promise that fulfills with a boolean NSNumber indicating
+ whether or not the animations actually finished.
 */
 + (AnyPromise *)promiseWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations;
 
 /**
- Returns a new promise that fulfills when the properties changed in the
- provided block have completed animation over `duration` seconds with
- initial `delay` and the provided animation `options`.
+ Animate changes to one or more views using the specified duration, delay,
+ options, and completion handler.
+ 
+ @param duration The total duration of the animations, measured in
+ seconds. If you specify a negative value or 0, the changes are made
+ without animating them.
 
- “Then”s the `BOOL` that the underlying `completion` block receives.
+ @param delay The amount of time (measured in seconds) to wait before
+ beginning the animations. Specify a value of 0 to begin the animations
+ immediately.
+ 
+ @param options A mask of options indicating how you want to perform the
+ animations. For a list of valid constants, see UIViewAnimationOptions.
+
+ @param animations A block object containing the changes to commit to the
+ views.
+
+ @return A promise that fulfills with a boolean NSNumber indicating
+ whether or not the animations actually finished.
 */
 + (AnyPromise *)promiseWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations;
 
 /**
- Returns a new promise that fulfills when the properties changed in the
- provided block have completed animation over `duration` seconds with
- initial `delay`, the provided animation `options` and the provided
- spring physics constants applied.
+ Performs a view animation using a timing curve corresponding to the
+ motion of a physical spring.
 
- “Then”s the `BOOL` that the underlying `completion` block receives.
+ @return A promise that fulfills with a boolean NSNumber indicating
+ whether or not the animations actually finished.
 */
 + (AnyPromise *)promiseWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay usingSpringWithDamping:(CGFloat)dampingRatio initialSpringVelocity:(CGFloat)velocity options:(UIViewAnimationOptions)options animations:(void (^)(void))animations;
 
 /**
- Returns a new promise that fulfills when the properties changed in the
- provided block have completed keyframe animation over `duration`
- seconds with initial `delay` and the provided keyframe animation
- `options` applied.
+ Creates an animation block object that can be used to set up
+ keyframe-based animations for the current view.
 
- “Then”s the `BOOL` that the underlying `completion` block receives.
+ @return A promise that fulfills with a boolean NSNumber indicating
+ whether or not the animations actually finished.
 */
 + (AnyPromise *)promiseWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewKeyframeAnimationOptions)options keyframeAnimations:(void (^)(void))animations;
 

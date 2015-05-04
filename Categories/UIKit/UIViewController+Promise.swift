@@ -28,6 +28,19 @@ private func promise<T>(vc: UIViewController) -> Promise<T> {
 }
 
 
+/**
+ To import the `UIViewController` category:
+
+    pod "PromiseKit/UIKit"
+
+ Or `UIKit` is one of the categories imported by the umbrella pod:
+
+    pod "PromiseKit"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension UIViewController {
     public func promiseViewController<T>(vc: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) -> Promise<T> {
 

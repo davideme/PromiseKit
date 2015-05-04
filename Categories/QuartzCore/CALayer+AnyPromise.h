@@ -11,15 +11,15 @@
 /**
  To import the `CALayer` category:
 
-    pod "PromiseKit/CALayer"
-
- Or you can import all categories on `QuartzCore`:
-
     pod "PromiseKit/QuartzCore"
 
  Or `CALayer` is one of the categories imported by the umbrella pod:
 
     pod "PromiseKit"
+
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface CALayer (PromiseKit)
 
@@ -27,8 +27,9 @@
  Add the specified animation object to the layer’s render tree.
 
  @return A promise that thens two parameters:
- 1. A boolean: `YES` if the animation progressed entirely to completion.
- 2. the `CAAnimation` object.
+
+  1. `@YES` if the animation progressed entirely to completion.
+  2. The `CAAnimation` object.
 
  @see addAnimation:forKey
 */

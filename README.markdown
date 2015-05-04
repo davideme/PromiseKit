@@ -15,6 +15,9 @@ Goals
 MUSTDO
 ======
 
+* Should test UIViewController, SLComposeViewController, MFMailViewController etc.
+
+* Have to wait for CocoaPods 0.3.7
 * Wait for all pods that depend on PMK to merge your dependency correction PRs
 * Offer pre-built binaries of 1.x and 2.x including a static archive for iOS 7 people (if possible). Deprecate 1.x Swift version (remove it even, it was never official)
 * Fully document all methods
@@ -22,6 +25,8 @@ MUSTDO
 
 NICETODO
 ========
+
+* Provide an example for every method.
 * Grab Promises A+ JS tests and bridge to them so we run those tests and not our rewritten in Swift version
 * Documentation has a complete index
 * 100% test coverage including categories

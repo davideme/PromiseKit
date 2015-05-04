@@ -2,9 +2,32 @@ import Foundation
 import PromiseKit
 import UIKit.UIAlertView
 
+/**
+ To import the `UIActionSheet` category:
 
-class UIAlertViewProxy: NSObject, UIAlertViewDelegate {
+    pod "PromiseKit/UIKit"
+
+ Or `UIKit` is one of the categories imported by the umbrella pod:
+
+    pod "PromiseKit"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
+extension UIAlertView {
+    public func promise() -> Promise<Int> {
+        let proxy = PMKAlertViewDelegate()
+        delegate = proxy
+        proxy.retainCycle = proxy
+        show()
+        return proxy.promise
+    }
+}
+
+private class PMKAlertViewDelegate: NSObject, UIAlertViewDelegate {
     let (promise, fulfill, reject) = Promise<Int>.defer()
+    var retainCycle: NSObject?
 
     func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex != alertView.cancelButtonIndex {
@@ -12,18 +35,5 @@ class UIAlertViewProxy: NSObject, UIAlertViewDelegate {
         } else {
             reject(NSError.cancelledError())
         }
-    }
-}
-
-
-extension UIAlertView {
-    public func promise() -> Promise<Int> {
-        let proxy = UIAlertViewProxy()
-        delegate = proxy
-        show()
-        proxy.promise.finally {
-            proxy.description
-        }
-        return proxy.promise
     }
 }

@@ -10,20 +10,20 @@
 /**
  To import the `SKRequest` category:
 
-    pod "PromiseKit/SKRequest"
-
- Or you can import all categories on `StoreKit`:
-
     pod "PromiseKit/StoreKit"
-
- Notably, `SKProductsRequest` subclasses `SKRequest`. So, it also has the following methods.
+ 
+ And then in your sources:
+ 
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface SKRequest (PromiseKit)
 
 /**
  Sends the request to the Apple App Store.
 
- @return A void promise that fulfills when the request succeeds.
+ @return A promise that fulfills when the request succeeds. If the
+ receiver is an SKProductsRequest, the promise fulfills with its
+ `SKProductsResponse`, otherwise the promise is void.
 */
 - (AnyPromise *)promise;
 

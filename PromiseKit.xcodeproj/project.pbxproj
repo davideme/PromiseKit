@@ -540,12 +540,13 @@
 			path = MapKit;
 			sourceTree = "<group>";
 		};
-		6302ACB91AEF42F2001F0069 /* MessagesUI */ = {
+		6302ACB91AEF42F2001F0069 /* MessageUI */ = {
 			isa = PBXGroup;
 			children = (
 				6302ACBA1AEF42F2001F0069 /* MFMailComposeViewController+Promise.swift */,
 				6302ACBB1AEF42F2001F0069 /* MFMessageComposeViewController+Promise.swift */,
 			);
+			name = MessageUI;
 			path = MessagesUI;
 			sourceTree = "<group>";
 		};
@@ -703,7 +704,7 @@
 				6302ACA01AEF42F2001F0069 /* CoreLocation */,
 				6302ACA71AEF42F2001F0069 /* Foundation */,
 				6302ACB21AEF42F2001F0069 /* MapKit */,
-				6302ACB91AEF42F2001F0069 /* MessagesUI */,
+				6302ACB91AEF42F2001F0069 /* MessageUI */,
 				6302ACBC1AEF42F2001F0069 /* Photos */,
 				6302ACBE1AEF42F2001F0069 /* QuartzCore */,
 				6302ACC11AEF42F2001F0069 /* Social */,
