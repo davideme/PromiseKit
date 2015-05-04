@@ -38,12 +38,12 @@ private class PMKMailComposeViewControllerDelegate: NSObject, MFMailComposeViewC
             case MFMailComposeResultFailed.value:
                 var info = [NSObject: AnyObject]()
                 info[NSLocalizedDescriptionKey] = "The attempt to save or send the message was unsuccessful."
-                info[NSUnderlyingErrorKey] = result
+                info[NSUnderlyingErrorKey] = NSNumber(unsignedInt: result.value)
                 reject(NSError(domain: PMKErrorDomain, code: PMKOperationFailed, userInfo: info))
             case MFMailComposeResultCancelled.value:
                 reject(NSError.cancelledError())
             default:
-                fulfill()
+                fulfill(result)
             }
         }
         retainCycle = nil

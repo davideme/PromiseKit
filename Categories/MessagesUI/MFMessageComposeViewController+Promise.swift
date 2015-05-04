@@ -1,5 +1,6 @@
-import PromiseKit
+import Foundation
 import MessageUI.MFMessageComposeViewController
+import PromiseKit
 import UIKit.UIViewController
 
 /**
@@ -30,7 +31,7 @@ private class PMKMessageComposeViewControllerDelegate: NSObject, MFMessageCompos
     let (promise, fulfill, reject) = Promise<Void>.defer()
     var retainCycle: NSObject?
 
-    func messageComposeViewController(controller: MFMessageComposeViewController!, didFinishWithResult result: MessageComposeResult) {
+    @objc func messageComposeViewController(controller: MFMessageComposeViewController!, didFinishWithResult result: MessageComposeResult) {
 
         switch result.value {
         case MessageComposeResultSent.value:
@@ -38,7 +39,7 @@ private class PMKMessageComposeViewControllerDelegate: NSObject, MFMessageCompos
         case MessageComposeResultFailed.value:
             var info = [NSObject: AnyObject]()
             info[NSLocalizedDescriptionKey] = "The attempt to save or send the message was unsuccessful."
-            info[NSUnderlyingErrorKey] = result
+            info[NSUnderlyingErrorKey] = NSNumber(unsignedInt: result.value)
             reject(NSError(domain: PMKErrorDomain, code: PMKOperationFailed, userInfo: info))
         case MessageComposeResultCancelled.value:
             reject(NSError.cancelledError())

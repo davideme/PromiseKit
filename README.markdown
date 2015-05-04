@@ -21,6 +21,7 @@ MUSTDO
     }
 
 * Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
+  * Do it properly by actually pressing buttons in simulator. Yes it's fragile but yes it actually tests the categories.
 * Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
 * Fully document all methods in CorePromise
 

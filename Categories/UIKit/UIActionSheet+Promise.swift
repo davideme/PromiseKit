@@ -30,7 +30,7 @@ private class PMKActionSheetDelegate: NSObject, UIActionSheetDelegate {
     let (promise, fulfill, reject) = Promise<Int>.defer()
     var retainCycle: NSObject?
 
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+    @objc func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex != actionSheet.cancelButtonIndex {
             fulfill(buttonIndex)
         } else {
