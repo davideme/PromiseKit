@@ -11,7 +11,7 @@
 
 
 static inline NSError *dummyWithCode(NSInteger code) {
-    return [NSError errorWithDomain:@"PMKTestErrorDomain" code:rand() userInfo:@{NSLocalizedDescriptionKey: @(code).stringValue}];
+    return [NSError errorWithDomain:@"PMKTestErrorDomain" code:code userInfo:nil];
 }
 
 static inline NSError *dummyError() {
