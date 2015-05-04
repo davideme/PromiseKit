@@ -15,11 +15,13 @@ MUSTDO
 ======
 
 * Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
-
-* Have to wait for CocoaPods 0.3.7
 * Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
+* Fully document all methods in CorePromise
+
+POSTRELEASETODO
+===============
+
 * Offer pre-built binaries of 1.x and 2.x including a static archive for iOS 7 people (if possible). Deprecate 1.x Swift version (remove it even, it was never official)
-* Fully document all methods on CorePromise
 * Provide example of providing promises for a library (if it's objc, provide AnyPromise, if Swift, then Promise<T>) don't feel obligated to provide both.
 
 NICETODO
