@@ -8,6 +8,23 @@ public enum CatchPolicy {
 }
 
 
+/**
+ A promise represents the future value of a task.
+
+ To obtain the value of a promise we call `then`.
+
+ Promises are chainable: `then` returns a promise, you can call `then` on
+ that promise, which  returns a promise, you can call `then` on that
+ promise, et cetera.
+
+ Promises start in a pending state: they have `nil` value. Promises
+ *resolve* to become *fulfilled* or *rejected*. A rejected promise has an
+ `NSError` for its value, a fulfilled promise has any other object as its
+ value.
+
+ @see [PromiseKit `then` Guide](http://promisekit.org/then/)
+ @see [PromiseKit Chaining Guide](http://promisekit.org/chaining/)
+*/
 public class Promise<T> {
     let state: State
 
@@ -65,7 +82,30 @@ public class Promise<T> {
             when.pipe{ body($0, resolve) }
         })
     }
-    
+
+    /**
+     The provided block is executed when this Promise is resolved.
+
+     If you provide a block that takes a parameter, the value of the receiver will be passed as that parameter.
+
+     @param on The queue on which body should be executed.
+
+     @param body The closure that is executed when this Promise is fulfilled.
+
+        [NSURLConnection GET:url].then(^(NSData *data){
+            // do something with data
+        });
+
+     @return A new promise that is resolved with the value returned from the provided closure. For example:
+
+        [NSURLConnection GET:url].then(^(NSData *data){
+            return data.length;
+        }).then(^(NSNumber *number){
+            //…
+        });
+
+     @see thenInBackground
+    */
     public func then<U>(on q: dispatch_queue_t = dispatch_get_main_queue(), _ body: (T) -> U) -> Promise<U> {
         return Promise<U>(when: self) { resolution, resolve in
             switch resolution {
@@ -111,6 +151,13 @@ public class Promise<T> {
         }
     }
 
+    /**
+     The provided closure is executed on the default background queue when this Promise is fulfilled.
+
+     This method is provided as a convenience for `then`.
+
+     @see then
+    */
     public func thenInBackground<U>(body: (T) -> U) -> Promise<U> {
         return then(on: dispatch_get_global_queue(0, 0), body)
     }
@@ -119,6 +166,24 @@ public class Promise<T> {
         return then(on: dispatch_get_global_queue(0, 0), body)
     }
 
+    /**
+     The provided closure is executed when this Promise is rejected.
+
+     Rejecting a promise cascades rejecting all subsequent promises (unless
+     recover is invoked) thus you will typically place your catch at the end
+     of a chain. Often utility promises will not have a catch, instead
+     delegating the error handling to the caller.
+
+     The provided closure always runs on the main queue.
+
+     @param policy The default policy does not execute your handler for
+     cancellation errors. See registerCancellationError for more
+     documentation.
+
+     @param body The handler to execute when this Promise is rejected.
+
+     @see registerCancellationError
+    */
     public func catch(policy: CatchPolicy = .AllErrorsExceptCancellation, _ body: (NSError) -> Void) {
         pipe { resolution in
             switch resolution {
@@ -149,6 +214,20 @@ public class Promise<T> {
         }
     }
 
+    /**
+     The provided closure is executed when this Promise is resolved.
+
+     @param on The queue on which body should be executed.
+
+     @param body The closure that is executed when this Promise is resolved.
+
+         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+         somePromise().then {
+             //…
+         }.finally {
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+         }
+    */
     public func finally(on q: dispatch_queue_t = dispatch_get_main_queue(), _ body: () -> Void) -> Promise<T> {
         return Promise(when: self) { resolution, resolve in
             contain_zalgo(q) {
@@ -236,6 +315,9 @@ func contain_zalgo(q: dispatch_queue_t, block: () -> Void) {
 
 
 extension Promise {
+    /**
+     Creates a rejected Promise with `PMKErrorDomain` and a specified localizedDescription and error code.
+    */
     public convenience init(error: String, code: Int = PMKUnexpectedError) {
         let error = NSError(domain: "PMKErrorDomain", code: code, userInfo: [NSLocalizedDescriptionKey: error])
         self.init(error)
@@ -260,7 +342,7 @@ extension Promise {
     }
 
     /**
-     Swift seems to be much less fussy about Void promises.
+     Swift (1.2) seems to be much less fussy about Void promises.
     */
     public func asVoid() -> Promise<Void> {
         return then(on: zalgo) { _ in return }
@@ -274,7 +356,27 @@ extension Promise: DebugPrintable {
     }
 }
 
+/**
+ Firstly can make chains more readable.
 
+ Compare:
+
+    NSURLConnection.GET(url1).then {
+        NSURLConnection.GET(url2)
+    }.then {
+        NSURLConnection.GET(url3)
+    }
+
+ With:
+
+    firstly {
+        NSURLConnection.GET(url1)
+    }.then {
+        NSURLConnection.GET(url2)
+    }.then {
+        NSURLConnection.GET(url3)
+    }
+*/
 public func firstly<T>(promise: () -> Promise<T>) -> Promise<T> {
     return promise()
 }

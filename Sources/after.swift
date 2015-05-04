@@ -1,6 +1,17 @@
 import Dispatch
 import Foundation.NSDate
 
+/**
+ @return A new promise that resolves after the specified time has passed.
+
+ @parameter duration The duration in seconds to wait before resolving this promise.
+
+ For example:
+
+    after(1).then {
+        //…
+    }
+*/
 public func after(delay: NSTimeInterval) -> Promise<Void> {
     return Promise { fulfill, _ in
         let delta = delay * NSTimeInterval(NSEC_PER_SEC)
