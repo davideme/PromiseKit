@@ -1,6 +1,16 @@
 import Accounts
 import PromiseKit
 
+/**
+ To import the `ACAccountStore` category:
+
+    use_frameworks!
+    pod "PromiseKit/ACAccountStore"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension ACAccountStore {
     public func renewCredentialsForAccount(account: ACAccount) -> Promise<ACAccountCredentialRenewResult> {
         return Promise { renewCredentialsForAccount(account, completion: $0.resolve) }

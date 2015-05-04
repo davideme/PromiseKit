@@ -1,9 +1,18 @@
+import AssetsLibrary
 import Foundation.NSData
 import PromiseKit
-
 import UIKit.UIViewController
-import AssetsLibrary
 
+/**
+ To import this `UIViewController` category:
+
+    use_frameworks!
+    pod "PromiseKit/AssetsLibrary"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension UIViewController {
     /**
       @return A promise that presents the provided UIImagePickerController and

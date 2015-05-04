@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'AssetsLibrary' do |ss|
     ss.ios.source_files = 'Categories/AssetsLibrary/*'
-    ss.dependency 'PromiseKit/CorePromise'
+    ss.dependency 'PromiseKit/UIKit'
     ss.ios.frameworks = 'AssetsLibrary'
   end
 

@@ -1,6 +1,16 @@
 import CloudKit.CKDatabase
 import PromiseKit
 
+/**
+ To import the `CKDatabase` category:
+
+    use_frameworks!
+    pod "PromiseKit/CloudKit"
+ 
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
+*/
 extension CKDatabase {
     public func fetchRecordWithID(recordID: CKRecordID) -> Promise<CKRecord> {
         return Promise { fetchRecordWithID(recordID, completionHandler: $0.resolve) }

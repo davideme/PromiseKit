@@ -4,7 +4,7 @@
  Resolves as soon as the Internet is accessible. If it is already
  accessible, resolves immediately.
 
- To import the `SystemConfiguration` category:
+ To import `SCNetworkReachability`:
 
     use_frameworks!
     pod "PromiseKit/SystemConfiguration"

@@ -1,17 +1,16 @@
 import CoreLocation.CLGeocoder
 import PromiseKit
 
-private var onceToken: dispatch_once_t = 0
+/**
+ To import the `CLGeocoder` category:
 
-class CLPromise<T>: Promise<T> {
-    override init(@noescape sealant: (Sealant<T>) -> Void) {
-        dispatch_once(&onceToken) {
-            NSError.registerCancelledErrorDomain(kCLErrorDomain, code: CLError.GeocodeCanceled.rawValue)
-        }
-        super.init(sealant: sealant)
-    }
-}
+    use_frameworks!
+    pod "PromiseKit/CoreLocation"
 
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension CLGeocoder {
     public func reverseGeocodeLocation(location: CLLocation) -> Promise<CLPlacemark> {
         return CLPromise { sealant in
@@ -35,5 +34,16 @@ extension CLGeocoder {
                 sealant.resolve((placemarks as? [CLPlacemark])?.first, error)
             }
         }
+    }
+}
+
+private var onceToken: dispatch_once_t = 0
+
+private class CLPromise<T>: Promise<T> {
+    override init(@noescape sealant: (Sealant<T>) -> Void) {
+        dispatch_once(&onceToken) {
+            NSError.registerCancelledErrorDomain(kCLErrorDomain, code: CLError.GeocodeCanceled.rawValue)
+        }
+        super.init(sealant: sealant)
     }
 }

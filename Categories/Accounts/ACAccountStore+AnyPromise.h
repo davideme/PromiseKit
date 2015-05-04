@@ -10,11 +10,12 @@
 /**
  To import the `ACAccountStore` category:
 
-    pod "PromiseKit/ACAccountStore"
-
- Or you can import all categories on `Accounts`:
-
+    use_frameworks!
     pod "PromiseKit/Accounts"
+ 
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface ACAccountStore (PromiseKit)
 
@@ -22,6 +23,7 @@
  Obtains permission to access protected user properties.
 
  @param accountType	The account type.
+
  @param options Can be nil.
 
  @return A promise that resolves when the requested permissions have been

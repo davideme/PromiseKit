@@ -6,20 +6,26 @@
 /**
  To import the `NSURLConnection` category:
 
-    pod "PromiseKit/NSURLConnection"
-
- Or you can import all categories on `Foudnation`:
-
+    use_frameworks!
     pod "PromiseKit/Foundation"
 
  Or `NSURLConnection` is one of the categories imported by the umbrella pod:
 
+    use_frameworks!
     pod "PromiseKit"
+ 
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 
  PromiseKit automatically deserializes the raw HTTP data response into the
  appropriate rich data type based on the mime type the server provides.
  Thus if the response is JSON you will get the deserialized JSON response.
  PromiseKit supports decoding into strings, JSON and UIImages.
+
+ However if your server does not provide a rich content-type, you will
+ just get `NSData`. This is rare, but a good example we came across was
+ downloading files from Dropbox.
 
  PromiseKit goes to quite some lengths to provide good `NSError` objects
  for error conditions at all stages of the HTTP to rich-data type

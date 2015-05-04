@@ -1,21 +1,21 @@
 import Foundation
 import PromiseKit
 
-//TODO get file system encoding from LANG as it may not be UTF8
+/**
+ To import the `NSTask` category:
 
-private func generateError(description: String, stdout: NSData, stderr: NSData, task: NSTask) -> NSError {
-    let info: [NSObject: AnyObject] = [
-        NSLocalizedDescriptionKey: description,
-        PMKTaskErrorLaunchPathKey: task.launchPath,
-        PMKTaskErrorArgumentsKey: task.arguments,
-        PMKTaskErrorStandardOutputKey: stdout,
-        PMKTaskErrorStandardErrorKey: stderr,
-        PMKTaskErrorExitStatusKey: Int(task.terminationStatus),
-    ]
-    return NSError(domain: PMKErrorDomain, code: PMKTaskError, userInfo: info)
-}
+    use_frameworks!
+    pod "PromiseKit/Foundation"
 
+ Or `NSTask` is one of the categories imported by the umbrella pod:
 
+    use_frameworks!
+    pod "PromiseKit"
+ 
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension NSTask {
     /**
      Launches the receiver and resolves when it exits.
@@ -89,4 +89,19 @@ extension NSTask {
             return stdout
         }
     }
+}
+
+
+//TODO get file system encoding from LANG as it may not be UTF8
+
+private func generateError(description: String, stdout: NSData, stderr: NSData, task: NSTask) -> NSError {
+    let info: [NSObject: AnyObject] = [
+        NSLocalizedDescriptionKey: description,
+        PMKTaskErrorLaunchPathKey: task.launchPath,
+        PMKTaskErrorArgumentsKey: task.arguments,
+        PMKTaskErrorStandardOutputKey: stdout,
+        PMKTaskErrorStandardErrorKey: stderr,
+        PMKTaskErrorExitStatusKey: Int(task.terminationStatus),
+    ]
+    return NSError(domain: PMKErrorDomain, code: PMKTaskError, userInfo: info)
 }

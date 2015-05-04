@@ -5,15 +5,17 @@
 /**
  To import the `NSNotificationCenter` category:
 
-    pod "PromiseKit/NSNotificationCenter"
-
- Or you can import all categories on `Foundation`:
-
+    use_frameworks!
     pod "PromiseKit/Foundation"
 
  Or `NSNotificationCenter` is one of the categories imported by the umbrella pod:
 
+    use_frameworks!
     pod "PromiseKit"
+
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface NSNotificationCenter (PromiseKit)
 /**

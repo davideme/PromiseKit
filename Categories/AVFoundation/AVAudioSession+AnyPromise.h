@@ -10,11 +10,12 @@
 /**
  To import the `AVAudioSession` category:
 
-    pod "PromiseKit/AVAudioSession"
-
- Or you can import all categories on `AVFoundation`:
-
+    use_frameworks!
     pod "PromiseKit/AVFoundation"
+
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface AVAudioSession (PromiseKit)
 

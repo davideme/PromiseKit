@@ -4,11 +4,12 @@
 /**
  To import the `CLLocationManager` category:
 
-    pod "PromiseKit/CLLocationManager"
-
- Or you can import all categories on `CoreLocation`:
-
+    use_frameworks!
     pod "PromiseKit/CoreLocation"
+ 
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface CLLocationManager (PromiseKit)
 
@@ -22,8 +23,9 @@
  any use of this method, or the promise will be rejected.
 
  @return A promise that thens two parameters:
- 1. The most recent `CLLocation`.
- 2. An array of all recent `CLLocations`.
+
+  1. The most recent `CLLocation`.
+  2. An array of all recent `CLLocations`.
 */
 + (AnyPromise *)promise;
 

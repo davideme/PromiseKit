@@ -2,6 +2,21 @@ import Foundation
 import PromiseKit
 import OMGHTTPURLRQ
 
+/**
+ To import the `NSURLConnection` category:
+
+    use_frameworks!
+    pod "PromiseKit/Foundation"
+
+ Or `NSURLConnection` is one of the categories imported by the umbrella pod:
+
+    use_frameworks!
+    pod "PromiseKit"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension NSURLConnection {
     public class func GET(url: String) -> Promise<NSData> {
         return promise(NSURLRequest(URL:NSURL(string:url)!))

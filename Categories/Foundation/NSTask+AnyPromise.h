@@ -1,19 +1,20 @@
 #import <Foundation/NSTask.h>
 #import <PromiseKit/AnyPromise.h>
 
-
 /**
  To import the `NSTask` category:
 
-    pod "PromiseKit/NSTask"
-
- Or you can import all categories on `Foundation`:
-
+    use_frameworks!
     pod "PromiseKit/Foundation"
 
  Or `NSTask` is one of the categories imported by the umbrella pod:
 
+    use_frameworks!
     pod "PromiseKit"
+ 
+ And then in your sources:
+
+    #import <PromiseKit/PromiseKit.h>
 */
 @interface NSTask (PromiseKit)
 

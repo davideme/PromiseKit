@@ -1,6 +1,72 @@
 import CoreLocation.CLLocationManager
 import PromiseKit
 
+/**
+ To import the `CLLocationManager` category:
+
+    use_frameworks!
+    pod "PromiseKit/CoreLocation"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
+extension CLLocationManager {
+
+    public enum RequestAuthorizationType {
+        case Automatic
+        case Always
+        case WhenInUse
+    }
+  
+    /**
+      @return A new promise that fulfills with the most recent CLLocation.
+
+      @param requestAuthorizationType We read your Info plist and try to
+      determine the authorization type we should request automatically. If you
+      want to force one or the other, change this parameter from its default
+      value.
+     */
+    public class func promise(requestAuthorizationType: RequestAuthorizationType = .Automatic) -> Promise<CLLocation> {
+        return promise(requestAuthorizationType: requestAuthorizationType).then(on: zalgo) {
+            (locations: [CLLocation]) -> CLLocation in
+            return locations.last!
+        }
+    }
+
+    /**
+      @return A new promise that fulfills with the first batch of location objects a CLLocationManager instance provides.
+     */
+    public class func promise(requestAuthorizationType: RequestAuthorizationType = .Automatic) -> Promise<[CLLocation]> {
+        return promise(yield: auther(requestAuthorizationType))
+    }
+
+    private class func promise(yield: (CLLocationManager) -> Void = { _ in }) -> Promise<[CLLocation]> {
+        let manager = LocationManager()
+        manager.delegate = manager
+        yield(manager)
+        manager.startUpdatingLocation()
+        manager.promise.finally {
+            manager.delegate = nil
+            manager.stopUpdatingLocation()
+        }
+        return manager.promise
+    }
+
+  #if os(iOS)
+    /**
+      Cannot error, despite the fact this might be more useful in some
+      circumstances, we stick with our decision that errors are errors
+      and errors only. Thus your catch handler is always catching failures
+      and not being abused for logic.
+     */
+    public class func requestAuthorization(type: RequestAuthorizationType = .Automatic) -> Promise<CLAuthorizationStatus> {
+        return AuthorizationCatcher(auther: auther(type)).promise
+    }
+  #endif
+}
+
+
 //TODO authorizations other than .Authorized should probably error
 
 
@@ -19,6 +85,7 @@ private class LocationManager: CLLocationManager, CLLocationManagerDelegate {
 #if os(iOS)
 private class AuthorizationCatcher: CLLocationManager, CLLocationManagerDelegate {
     let (promise, fulfill, _) = Promise<CLAuthorizationStatus>.defer()
+    var retainCycle: AnyObject?
 
     init(auther: (CLLocationManager)->()) {
         super.init()
@@ -26,6 +93,7 @@ private class AuthorizationCatcher: CLLocationManager, CLLocationManagerDelegate
         if status == .NotDetermined {
             delegate = self
             auther(self)
+            retainCycle = self
         } else {
             fulfill(status)
         }
@@ -34,6 +102,7 @@ private class AuthorizationCatcher: CLLocationManager, CLLocationManagerDelegate
     @objc private func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status != .NotDetermined {
             fulfill(status)
+            retainCycle = nil
         }
     }
 }
@@ -67,63 +136,3 @@ private func auther(requestAuthorizationType: CLLocationManager.RequestAuthoriza
   #endif
 }
 
-
-extension CLLocationManager {
-
-    public enum RequestAuthorizationType {
-        case Automatic
-        case Always
-        case WhenInUse
-    }
-  
-    /**
-      Returns the most recent CLLocation.
-
-      @param requestAuthorizationType We read your Info plist and try to
-      determine the authorization type we should request automatically. If you
-      want to force one or the other, change this parameter from its default
-      value.
-     */
-    public class func promise(requestAuthorizationType: RequestAuthorizationType = .Automatic) -> Promise<CLLocation> {
-        return promise(requestAuthorizationType: requestAuthorizationType).then(on: zalgo) {
-            (locations: [CLLocation]) -> CLLocation in
-            return locations.last!
-        }
-    }
-
-    /**
-      Returns the first batch of location objects a CLLocationManager instance
-      provides.
-     */
-    public class func promise(requestAuthorizationType: RequestAuthorizationType = .Automatic) -> Promise<[CLLocation]> {
-        return promise(yield: auther(requestAuthorizationType))
-    }
-
-    private class func promise(yield: (CLLocationManager) -> Void = { _ in }) -> Promise<[CLLocation]> {
-        let manager = LocationManager()
-        manager.delegate = manager
-        yield(manager)
-        manager.startUpdatingLocation()
-        manager.promise.finally {
-            manager.delegate = nil
-            manager.stopUpdatingLocation()
-        }
-        return manager.promise
-    }
-
-  #if os(iOS)
-    /**
-      Cannot error, despite the fact this might be more useful in some
-      circumstances, we stick with our decision that errors are errors
-      and errors only. Thus your catch handler is always catching failures
-      and not being abused for logic.
-     */
-    public class func requestAuthorization(type: RequestAuthorizationType = .Automatic) -> Promise<CLAuthorizationStatus> {
-        let catcher = AuthorizationCatcher(auther: auther(type))
-        catcher.promise.finally {
-            catcher.description
-        }
-        return catcher.promise
-    }
-  #endif
-}

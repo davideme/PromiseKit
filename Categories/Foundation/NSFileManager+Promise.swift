@@ -1,17 +1,21 @@
 import Foundation.NSFileManager
 import PromiseKit
 
+/**
+ To import the `NSFileManager` category:
 
-private func dispatch_promise<T>(on: dispatch_queue_t = dispatch_get_global_queue(0, 0), body: () -> (T!, NSError!)) -> Promise<T> {
-    return Promise{ (sealant: Sealant) -> Void in
-        dispatch_async(on) { _ -> Void in
-            let (a, b) = body()
-            sealant.resolve(a, b)
-        }
-    }
-}
+    use_frameworks!
+    pod "PromiseKit/Foundation"
 
+ Or `NSFileManager` is one of the categories imported by the umbrella pod:
 
+    use_frameworks!
+    pod "PromiseKit"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension NSFileManager {
     func removeItemAtPath(path: String) -> Promise<String> {
         return dispatch_promise() {
@@ -42,6 +46,15 @@ extension NSFileManager {
             var error: NSError?
             self.createDirectoryAtPath(path, withIntermediateDirectories: with, attributes: attributes, error: &error)
             return (path, error)
+        }
+    }
+}
+
+private func dispatch_promise<T>(on: dispatch_queue_t = dispatch_get_global_queue(0, 0), body: () -> (T!, NSError!)) -> Promise<T> {
+    return Promise{ (sealant: Sealant) -> Void in
+        dispatch_async(on) { _ -> Void in
+            let (a, b) = body()
+            sealant.resolve(a, b)
         }
     }
 }

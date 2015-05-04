@@ -16,6 +16,7 @@
 
  Or `CALayer` is one of the categories imported by the umbrella pod:
 
+    use_frameworks!
     pod "PromiseKit"
 
  And then in your sources:

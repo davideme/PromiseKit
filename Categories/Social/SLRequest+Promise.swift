@@ -1,6 +1,16 @@
 import PromiseKit
 import Social
 
+/**
+ To import the `SLRequest` category:
+
+    use_frameworks!
+    pod "PromiseKit/Social"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension SLRequest {
     public func promise() -> Promise<NSData> {
         return Promise { sealant in
