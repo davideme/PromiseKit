@@ -81,6 +81,10 @@ static inline NSError *NSErrorFromException(id exception) {
     }
 }
 
+- (id)__value {
+    return [self valueForKey:@"____value"];
+}
+
 @end
 
 
