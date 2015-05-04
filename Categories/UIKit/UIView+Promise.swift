@@ -4,6 +4,7 @@ import UIKit.UIView
 /**
  To import the `UIView` category:
 
+    use_frameworks!
     pod "PromiseKit/UIKit"
 
  Or `UIKit` is one of the categories imported by the umbrella pod:

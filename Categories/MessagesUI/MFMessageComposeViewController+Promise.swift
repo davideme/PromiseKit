@@ -5,6 +5,7 @@ import UIKit.UIViewController
 /**
  To import this `UIViewController` category:
 
+    use_frameworks!
     pod "PromiseKit/MessageUI"
 
  And then in your sources:

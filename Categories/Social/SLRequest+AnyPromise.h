@@ -10,6 +10,7 @@
 /**
  To import the `SLRequest` category:
 
+    use_frameworks!
     pod "PromiseKit/Social"
 
  And then in your sources:

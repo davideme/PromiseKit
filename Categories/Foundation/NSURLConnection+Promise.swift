@@ -2,56 +2,6 @@ import Foundation
 import PromiseKit
 import OMGHTTPURLRQ
 
-
-extension NSURLResponse {
-    private var stringEncoding: UInt? {
-        if let encodingName = textEncodingName {
-            let encoding = CFStringConvertIANACharSetNameToEncoding(encodingName)
-            if encoding != kCFStringEncodingInvalidId {
-                return CFStringConvertEncodingToNSStringEncoding(encoding)
-            }
-        }
-        return nil
-    }
-}
-
-
-private func fetch(var request: NSURLRequest) -> Promise<(NSData, NSURLResponse)> {
-    if request.valueForHTTPHeaderField("User-Agent") == nil {
-        let rq = request.mutableCopy() as! NSMutableURLRequest
-        rq.setValue(OMGUserAgent(), forHTTPHeaderField:"User-Agent")
-        request = rq
-    }
-
-    return Promise { fulfill, prereject in
-        NSURLConnection.sendAsynchronousRequest(request, queue: PMKOperationQueue) { rsp, data, err in
-
-            assert(!NSThread.isMainThread())
-
-            func reject(error: NSError) {
-                var info = error.userInfo ?? [:]
-                info[NSURLErrorFailingURLErrorKey] = request.URL
-                info[NSURLErrorFailingURLStringErrorKey] = request.URL?.absoluteString
-                info[PMKURLErrorFailingDataKey] = data
-                info[PMKURLErrorFailingStringKey] = NSString(data: data, encoding: rsp?.stringEncoding ?? NSUTF8StringEncoding)
-                info[PMKURLErrorFailingURLResponseKey] = rsp
-                prereject(NSError(domain: error.domain, code: error.code, userInfo: info))
-            }
-
-            if err != nil {
-                reject(err)
-            } else if let response = rsp as? NSHTTPURLResponse where response.statusCode < 200 || response.statusCode >= 300 {
-                reject(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse, userInfo: [
-                    NSLocalizedDescriptionKey: "The server returned a bad HTTP response code"
-                ]))
-            } else {
-                fulfill(data, rsp)
-            }
-        }
-    }
-}
-
-
 extension NSURLConnection {
     public class func GET(url: String) -> Promise<NSData> {
         return promise(NSURLRequest(URL:NSURL(string:url)!))
@@ -182,3 +132,52 @@ extension NSURLConnection {
     }
 }
 #endif
+
+
+extension NSURLResponse {
+    private var stringEncoding: UInt? {
+        if let encodingName = textEncodingName {
+            let encoding = CFStringConvertIANACharSetNameToEncoding(encodingName)
+            if encoding != kCFStringEncodingInvalidId {
+                return CFStringConvertEncodingToNSStringEncoding(encoding)
+            }
+        }
+        return nil
+    }
+}
+
+
+private func fetch(var request: NSURLRequest) -> Promise<(NSData, NSURLResponse)> {
+    if request.valueForHTTPHeaderField("User-Agent") == nil {
+        let rq = request.mutableCopy() as! NSMutableURLRequest
+        rq.setValue(OMGUserAgent(), forHTTPHeaderField:"User-Agent")
+        request = rq
+    }
+
+    return Promise { fulfill, prereject in
+        NSURLConnection.sendAsynchronousRequest(request, queue: PMKOperationQueue) { rsp, data, err in
+
+            assert(!NSThread.isMainThread())
+
+            func reject(error: NSError) {
+                var info = error.userInfo ?? [:]
+                info[NSURLErrorFailingURLErrorKey] = request.URL
+                info[NSURLErrorFailingURLStringErrorKey] = request.URL?.absoluteString
+                info[PMKURLErrorFailingDataKey] = data
+                info[PMKURLErrorFailingStringKey] = NSString(data: data, encoding: rsp?.stringEncoding ?? NSUTF8StringEncoding)
+                info[PMKURLErrorFailingURLResponseKey] = rsp
+                prereject(NSError(domain: error.domain, code: error.code, userInfo: info))
+            }
+
+            if err != nil {
+                reject(err)
+            } else if let response = rsp as? NSHTTPURLResponse where response.statusCode < 200 || response.statusCode >= 300 {
+                reject(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse, userInfo: [
+                    NSLocalizedDescriptionKey: "The server returned a bad HTTP response code"
+                    ]))
+            } else {
+                fulfill(data, rsp)
+            }
+        }
+    }
+}

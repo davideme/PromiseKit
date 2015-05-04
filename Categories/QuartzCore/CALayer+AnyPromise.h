@@ -11,6 +11,7 @@
 /**
  To import the `CALayer` category:
 
+    use_frameworks!
     pod "PromiseKit/QuartzCore"
 
  Or `CALayer` is one of the categories imported by the umbrella pod:

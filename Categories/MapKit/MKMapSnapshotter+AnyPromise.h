@@ -2,8 +2,9 @@
 #import <PromiseKit/AnyPromise.h>
 
 /**
- To import the `MKSnapshotter` category:
+ To import the `MKMapSnapshotter` category:
 
+    use_frameworks!
     pod "PromiseKit/MapKit"
 
  And then in your sources:

@@ -1,6 +1,16 @@
 import PromiseKit
 import MapKit
 
+/**
+ To import the `MKDirections` category:
+
+    use_frameworks!
+    pod "PromiseKit/MapKit"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension MKDirections {
     /**
      Calling cancel on an MKDirections instance does nothing. The API is a

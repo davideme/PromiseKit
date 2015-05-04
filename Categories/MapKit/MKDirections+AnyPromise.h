@@ -4,6 +4,7 @@
 /**
  To import the `MKDirections` category:
 
+    use_frameworks!
     pod "PromiseKit/MapKit"
 
  And then in your sources:

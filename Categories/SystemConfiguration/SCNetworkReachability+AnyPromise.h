@@ -6,6 +6,7 @@
 
  To import the `SystemConfiguration` category:
 
+    use_frameworks!
     pod "PromiseKit/SystemConfiguration"
 
  And then in your sources:

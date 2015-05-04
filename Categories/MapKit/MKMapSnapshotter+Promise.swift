@@ -1,6 +1,16 @@
 import MapKit
 import PromiseKit
 
+/**
+ To import the `MKMapSnapshotter` category:
+
+    use_frameworks!
+    pod "PromiseKit/MapKit"
+
+ And then in your sources:
+
+    import PromiseKit
+*/
 extension MKMapSnapshotter {
     /**
       Don’t cancel the Snapshotter, Apple never call the completionHandler if

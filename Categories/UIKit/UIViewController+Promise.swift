@@ -2,35 +2,10 @@ import Foundation.NSError
 import PromiseKit
 import UIKit
 
-
-@objc public protocol Promisable {
-    /**
-     Provide a promise for promiseViewController here.
-
-     The resulting property must be annotated with @objc.
-
-     Obviously return a Promise. There is an issue with generics and Swift and
-     protocols currently so we couldn't specify that.
-    */
-    var promise: AnyObject! { get }
-}
-
-private func promise<T>(vc: UIViewController) -> Promise<T> {
-    if !vc.conformsToProtocol(Promisable) {
-        return Promise(error: "The provided UIViewController does not conform to the Promisable protocol.", code: PMKInvalidUsageError)
-    } else if let promise = vc.valueForKeyPath("promise") as? Promise<T> {
-        return promise
-    } else if let promise: AnyObject = vc.valueForKeyPath("promise") {
-        return Promise(error: "The provided UIViewController’s promise has unexpected type specialization.", code: PMKInvalidUsageError)
-    } else {
-        return Promise(error: "The provided UIViewController’s promise property returned nil", code: PMKInvalidUsageError)
-    }
-}
-
-
 /**
- To import the `UIViewController` category:
+ To import this `UIViewController` category:
 
+    use_frameworks!
     pod "PromiseKit/UIKit"
 
  Or `UIKit` is one of the categories imported by the umbrella pod:
@@ -69,24 +44,7 @@ extension UIViewController {
             return Promise(error: "Cannot promise an empty UINavigationController")
         }
     }
-}
 
-
-// scope is internal because used by ALAssetsLibrary extension
-@objc class UIImagePickerControllerProxy: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    let (promise, fulfill, reject) = Promise<[NSObject : AnyObject]>.defer()
-
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        fulfill(info)
-    }
-
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        reject(NSError.cancelledError())
-    }
-}
-
-
-extension UIViewController {
     public func promiseViewController(vc: UIImagePickerController, animated: Bool = true, completion: (() -> Void)? = nil) -> Promise<UIImage> {
         let proxy = UIImagePickerControllerProxy()
         vc.delegate = proxy
@@ -103,5 +61,43 @@ extension UIViewController {
         }.finally {
             proxy.description
         }
+    }
+}
+
+@objc public protocol Promisable {
+    /**
+    Provide a promise for promiseViewController here.
+
+    The resulting property must be annotated with @objc.
+
+    Obviously return a Promise. There is an issue with generics and Swift and
+    protocols currently so we couldn't specify that.
+    */
+    var promise: AnyObject! { get }
+}
+
+private func promise<T>(vc: UIViewController) -> Promise<T> {
+    if !vc.conformsToProtocol(Promisable) {
+        return Promise(error: "The provided UIViewController does not conform to the Promisable protocol.", code: PMKInvalidUsageError)
+    } else if let promise = vc.valueForKeyPath("promise") as? Promise<T> {
+        return promise
+    } else if let promise: AnyObject = vc.valueForKeyPath("promise") {
+        return Promise(error: "The provided UIViewController’s promise has unexpected type specialization.", code: PMKInvalidUsageError)
+    } else {
+        return Promise(error: "The provided UIViewController’s promise property returned nil", code: PMKInvalidUsageError)
+    }
+}
+
+
+// internal scope because used by ALAssetsLibrary extension
+@objc class UIImagePickerControllerProxy: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    let (promise, fulfill, reject) = Promise<[NSObject : AnyObject]>.defer()
+
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        fulfill(info)
+    }
+
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        reject(NSError.cancelledError())
     }
 }

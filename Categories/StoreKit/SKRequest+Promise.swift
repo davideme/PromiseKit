@@ -4,6 +4,7 @@ import PromiseKit
 /**
  To import the `SKRequest` category:
 
+    use_frameworks!
     pod "PromiseKit/StoreKit"
 
  And then in your sources:
