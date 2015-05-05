@@ -286,10 +286,15 @@ class TestUIViewController: UIKitTestCase {
 
     func test7() {
         let ex = expectationWithDescription("")
-        let mockvc = MockViewController()
         let mailer = MFMailComposeViewController()
-        mockvc.promiseViewController(mailer, animated: false).then { (result: MFMailComposeResult) -> Void in
-            XCTAssertEqual(result.value, MFMailComposeResultSent.value)
+        rootvc.promiseViewController(mailer, animated: false, completion: {
+            after(0.05).then { _ -> Void in
+                let button = mailer.viewControllers[0].navigationItem.leftBarButtonItem!
+
+                let control: UIControl = UIControl()
+                control.sendAction(button.action, to: button.target, forEvent: nil)
+            }
+        }).catch(policy: CatchPolicy.AllErrors) { _ -> Void in
             ex.fulfill()
         }
         waitForExpectationsWithTimeout(1, handler: nil)

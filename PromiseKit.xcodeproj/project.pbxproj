@@ -102,6 +102,7 @@
 		635D0D761ADDA2EA00CC0406 /* AnyPromise.test.m in Sources */ = {isa = PBXBuildFile; fileRef = 635D0D741ADDA2C100CC0406 /* AnyPromise.test.m */; };
 		635D0D7B1ADDB11400CC0406 /* ErrorUnhandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635D0D7A1ADDB11400CC0406 /* ErrorUnhandler.swift */; };
 		635D0D7C1ADDB11400CC0406 /* ErrorUnhandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635D0D7A1ADDB11400CC0406 /* ErrorUnhandler.swift */; };
+		6362D8B41AF8831200E9E0A2 /* SLComposeViewController+Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6302ACC21AEF42F2001F0069 /* SLComposeViewController+Promise.swift */; };
 		636A44EE1AEC0F6700639777 /* TestSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = 637BF6111AEAC62400997C8B /* TestSocial.m */; };
 		63772C9C1AF09B8A00ED2F59 /* ErrorUnhandler.test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63772C9B1AF09B8A00ED2F59 /* ErrorUnhandler.test.swift */; };
 		6388E19C1AD310F80074D85B /* NSJSONFromData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B4F8AF1AD19EDB0036A41A /* NSJSONFromData.swift */; };
@@ -1266,6 +1267,7 @@
 				6302AD3C1AEF4307001F0069 /* ALAssetsLibrary+Promise.swift in Sources */,
 				6302AD3D1AEF430E001F0069 /* MFMailComposeViewController+Promise.swift in Sources */,
 				6302AD3E1AEF430E001F0069 /* MFMessageComposeViewController+Promise.swift in Sources */,
+				6362D8B41AF8831200E9E0A2 /* SLComposeViewController+Promise.swift in Sources */,
 				6302AD311AEF4303001F0069 /* UIActionSheet+AnyPromise.m in Sources */,
 				6302AD321AEF4303001F0069 /* UIActionSheet+Promise.swift in Sources */,
 				6302AD341AEF4303001F0069 /* UIAlertView+AnyPromise.m in Sources */,

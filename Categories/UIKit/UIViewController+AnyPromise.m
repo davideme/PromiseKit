@@ -71,7 +71,13 @@
 }
 
 - (void)mailComposeController:(id)controller didFinishWithResult:(int)result error:(NSError *)error {
-    resolve(error ?: @(result));
+    if (error != nil) {
+        resolve(error);
+    } else if (result == 0) {
+        resolve([NSError cancelledError]);
+    } else {
+        resolve(@(result));
+    }
     retainCycle = nil;
 }
 

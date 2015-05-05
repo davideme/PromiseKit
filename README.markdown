@@ -15,6 +15,8 @@ Goals
 MUSTDO
 ======
 
+* objc is still important, make it feature parity with swift
+
 * Reconsider excluding dispatch_promise for swift at least, as it makes this pattern possible:
 
     class Something {
