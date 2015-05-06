@@ -30,7 +30,7 @@
                     userInfo[PMKURLErrorFailingStringKey] = str;
                 }
 
-                resolve([NSError errorWithDomain:PMKErrorDomain code:NSURLErrorBadServerResponse userInfo:userInfo]);
+                resolve([NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:userInfo]);
             }
             else if (PMKHTTPURLResponseIsJSON(urlResponse)) {
                 id err = nil;

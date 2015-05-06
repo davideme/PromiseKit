@@ -4,7 +4,7 @@ import PromiseKit
 import UIKit.UIViewController
 
 /**
- To import this `UIViewController` category:
+ To import this `UIViewController` extension:
 
     use_frameworks!
     pod "PromiseKit/AssetsLibrary"
@@ -16,16 +16,15 @@ import UIKit.UIViewController
 extension UIViewController {
     /**
       @return A promise that presents the provided UIImagePickerController and
-      fulfills with the user selected media data.
+      fulfills with the user selected media’s `NSData`.
      */
     public func promiseViewController(vc: UIImagePickerController, animated: Bool = false, completion: (() -> Void)? = nil) -> Promise<NSData> {
         let proxy = UIImagePickerControllerProxy()
         vc.delegate = proxy
+
         presentViewController(vc, animated: animated, completion: completion)
-        proxy.promise.finally {
-            proxy.description
-        }
-        return proxy.promise.then(on: waldo) { info -> Promise<NSData> in
+
+        return proxy.promise.then(on: zalgo) { info -> Promise<NSData> in
             let url = info[UIImagePickerControllerReferenceURL] as! NSURL
             
             return Promise { sealant in

@@ -3,7 +3,7 @@ import Social
 import XCTest
 
 class TestSLRequest: XCTestCase {
-    func test() {
+    func testSLRequest() {
         // I tried to just override SLRequest, but Swift wouldn't let me
         // then use the long initializer, and an exception is thrown inside
         // init()

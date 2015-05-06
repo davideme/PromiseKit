@@ -35,7 +35,11 @@
         PMKResolver resolve;
         promise = [AnyPromise promiseWithResolver:&resolve];
         [vc setValue:^(NSInteger result){
-            resolve(@(result));
+            if (result == 0) {
+                resolve([NSError cancelledError]);
+            } else {
+                resolve(@(result));
+            }
         } forKey:@"completionHandler"];
     }
     else if ([vc isKindOfClass:[UINavigationController class]])

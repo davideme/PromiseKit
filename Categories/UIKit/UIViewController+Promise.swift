@@ -59,8 +59,6 @@ extension UIViewController {
                 return Promise(img)
             }
             return Promise(error: "No image was found", code: PMKUnexpectedError)
-        }.finally {
-            proxy.description
         }
     }
 }
@@ -93,12 +91,20 @@ private func promise<T>(vc: UIViewController) -> Promise<T> {
 // internal scope because used by ALAssetsLibrary extension
 @objc class UIImagePickerControllerProxy: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     let (promise, fulfill, reject) = Promise<[NSObject : AnyObject]>.defer()
+    var retainCycle: AnyObject?
+
+    required override init() {
+        super.init()
+        retainCycle = self
+    }
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         fulfill(info)
+        retainCycle = nil
     }
 
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         reject(NSError.cancelledError())
+        retainCycle = nil
     }
 }
