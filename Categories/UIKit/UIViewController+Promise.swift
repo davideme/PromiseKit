@@ -59,6 +59,8 @@ extension UIViewController {
                 return Promise(img)
             }
             return Promise(error: "No image was found", code: PMKUnexpectedError)
+        }.finally(on: zalgo) {
+            self.dismissViewControllerAnimated(animated, completion: nil)
         }
     }
 }

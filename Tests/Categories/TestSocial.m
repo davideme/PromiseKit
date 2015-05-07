@@ -1,7 +1,6 @@
 #import "SLRequest+AnyPromise.h"
 @import Social;
 @import Stubbilino;
-#import "UIViewController+AnyPromise.h"
 @import XCTest;
 
 
@@ -89,6 +88,7 @@
 
 
 #if TARGET_OS_IPHONE
+#import "UIViewController+AnyPromise.h"
 @import UIKit;
 
 @interface TestPromiseSLComposeViewController: XCTestCase @end @implementation TestPromiseSLComposeViewController

@@ -5,7 +5,7 @@
 @import XCTest;
 
 
-@interface TestNSURLConnections: XCTestCase @end @implementation TestNSURLConnections
+@interface TestNSURLConnectionM: XCTestCase @end @implementation TestNSURLConnectionM
 
 - (void)tearDown {
     [OHHTTPStubs removeAllStubs];

@@ -4,159 +4,17 @@ import UIKit
 import XCTest
 import KIFFramework
 
-class TestUIActionSheet: UIKitTestCase {
-    // fulfills with buttonIndex
-    func test1() {
-        let ex = expectationWithDescription("")
+class TestPromisableViewController: UIKitTestCase {
 
-        let sheet = UIActionSheet()
-        sheet.addButtonWithTitle("0")
-        sheet.addButtonWithTitle("1")
-        sheet.cancelButtonIndex = sheet.addButtonWithTitle("2")
-        sheet.promiseInView(rootvc.view).then { x -> Void in
-            XCTAssertEqual(x, 1)
-            ex.fulfill()
+    private class MyViewController: UIViewController, Promisable {
+        @objc var promise: AnyObject! = nil
+
+        var appeared = false
+
+        private override func viewDidAppear(animated: Bool) {
+            appeared = true
         }
-        after(0.5).then {
-            sheet.dismissWithClickedButtonIndex(1, animated: false)
-        }
-        waitForExpectationsWithTimeout(1, handler: nil)
     }
-
-    // cancel button presses are cancelled errors
-    func test2() {
-        let ex = expectationWithDescription("")
-
-        let sheet = UIActionSheet()
-        sheet.addButtonWithTitle("0")
-        sheet.addButtonWithTitle("1")
-        sheet.cancelButtonIndex = sheet.addButtonWithTitle("2")
-        sheet.promiseInView(rootvc.view).catch(policy: .AllErrors) { err in
-            XCTAssertTrue(err.cancelled)
-            ex.fulfill()
-        }
-        after(0.5).then {
-            sheet.dismissWithClickedButtonIndex(2, animated: false)
-        }
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-
-    // single button UIAlertViews don't get considered cancelled
-    func test3() {
-        let ex = expectationWithDescription("")
-
-        let sheet = UIActionSheet()
-        sheet.addButtonWithTitle("0")
-        sheet.promiseInView(rootvc.view).then { _ in
-            ex.fulfill()
-        }
-        after(0.5).then {
-            sheet.dismissWithClickedButtonIndex(0, animated: false)
-        }
-        waitForExpectationsWithTimeout(3, handler: nil)
-    }
-
-    // single button UIAlertViews don't get considered cancelled unless the cancelIndex is set
-    func test4() {
-        let ex = expectationWithDescription("")
-
-        let sheet = UIActionSheet()
-        sheet.cancelButtonIndex = sheet.addButtonWithTitle("0")
-        sheet.promiseInView(rootvc.view).catch(policy: .AllErrors) { _ in
-            ex.fulfill()
-        }
-        after(0.5).then {
-            sheet.dismissWithClickedButtonIndex(0, animated: false)
-        }
-        waitForExpectationsWithTimeout(3, handler: nil)
-    }
-}
-
-class TestUIAlertView: UIKitTestCase {
-    // fulfills with buttonIndex
-    func test1() {
-        let ex = expectationWithDescription("")
-
-        let alert = UIAlertView()
-        alert.addButtonWithTitle("0")
-        alert.addButtonWithTitle("1")
-        alert.cancelButtonIndex = alert.addButtonWithTitle("2")
-        alert.promise().then { x -> Void in
-            XCTAssertEqual(x, 1)
-            ex.fulfill()
-        }
-        after(0.5).then {
-            alert.dismissWithClickedButtonIndex(1, animated: false)
-        }
-        waitForExpectationsWithTimeout(3, handler: nil)
-    }
-
-    // cancel button presses are cancelled errors
-    func test2() {
-        let ex = expectationWithDescription("")
-
-        let alert = UIAlertView()
-        alert.addButtonWithTitle("0")
-        alert.addButtonWithTitle("1")
-        alert.cancelButtonIndex = alert.addButtonWithTitle("2")
-        alert.promise().catch(policy: .AllErrors) { err in
-            XCTAssertTrue(err.cancelled)
-            ex.fulfill()
-        }
-        after(0.5).then {
-            alert.dismissWithClickedButtonIndex(2, animated: false)
-        }
-        waitForExpectationsWithTimeout(3, handler: nil)
-    }
-
-    // single button UIAlertViews don't get considered cancelled
-    func test3() {
-        let ex = expectationWithDescription("")
-
-        let alert = UIAlertView()
-        alert.addButtonWithTitle("0")
-        alert.promise().then { _ in
-            ex.fulfill()
-        }
-        after(0.5).then {
-            alert.dismissWithClickedButtonIndex(0, animated: false)
-        }
-        waitForExpectationsWithTimeout(3, handler: nil)
-    }
-
-    // single button UIAlertViews don't get considered cancelled unless the cancelIndex is set
-    func test4() {
-        let ex = expectationWithDescription("")
-
-        let alert = UIAlertView()
-        alert.cancelButtonIndex = alert.addButtonWithTitle("0")
-        alert.promise().catch(policy: .AllErrors) { _ in
-            ex.fulfill()
-        }
-        after(0.5).then {
-            alert.dismissWithClickedButtonIndex(0, animated: false)
-        }
-        waitForExpectationsWithTimeout(3, handler: nil)
-    }
-}
-
-class TestUIView: UIKitTestCase {
-    func test() {
-        let ex = expectationWithDescription("")
-
-        UIView.animate(duration: 0.05) {
-            self.rootvc.view.alpha = 0
-        }.then { completed -> Void in
-            XCTAssertTrue(completed)
-            XCTAssertEqual(self.rootvc.view.alpha, 0)
-            ex.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-}
-
-class TestUIViewController: UIKitTestCase {
 
     // fails if promised ViewController has no promise property
     func test1a() {
@@ -240,9 +98,11 @@ class TestUIViewController: UIKitTestCase {
         }
         waitForExpectationsWithTimeout(1, handler: nil)
     }
+}
 
+class TestPromiseImagePickerController: UIKitTestCase {
     // UIImagePickerController fulfills with edited image
-    func test4() {
+    func test1() {
         class Mock: UIViewController {
             var info = [NSObject:AnyObject]()
 
@@ -268,7 +128,7 @@ class TestUIViewController: UIKitTestCase {
     }
 
     // UIImagePickerController fulfills with original image if no edited image available
-    func test5() {
+    func test2() {
         class Mock: UIViewController {
             var info = [NSObject:AnyObject]()
 
@@ -294,29 +154,8 @@ class TestUIViewController: UIKitTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
-    // cancelling mail composer cancels promise
-    func test7() {
-        let ex = expectationWithDescription("")
-        let mailer = MFMailComposeViewController()
-        let promise = rootvc.promiseViewController(mailer, animated: false, completion: {
-            after(0.05).then { _ -> Void in
-                let button = mailer.viewControllers[0].navigationItem.leftBarButtonItem!
-
-                let control: UIControl = UIControl()
-                control.sendAction(button.action, to: button.target, forEvent: nil)
-            }
-        })
-        promise.catch { _ -> Void in
-            XCTFail()
-        }
-        promise.catch(policy: CatchPolicy.AllErrors) { _ -> Void in
-            ex.fulfill()
-        }
-        waitForExpectationsWithTimeout(10, handler: nil)
-    }
-
     // cancelling picker cancels promise
-    func test8() {
+    func test3() {
         let ex = expectationWithDescription("")
         let picker = UIImagePickerController()
         let promise: Promise<UIImage> = rootvc.promiseViewController(picker, animated: false, completion: {
@@ -329,13 +168,15 @@ class TestUIViewController: UIKitTestCase {
             XCTFail()
         }
         promise.catch(policy: CatchPolicy.AllErrors) { _ -> Void in
-            ex.fulfill()
+            after(0.5).then(ex.fulfill)
         }
         waitForExpectationsWithTimeout(10, handler: nil)
+
+        XCTAssertNil(rootvc.presentedViewController)
     }
 
     // can select image from picker
-    func test9() {
+    func test4() {
         let ex = expectationWithDescription("")
         let picker = UIImagePickerController()
         let promise: Promise<UIImage> = rootvc.promiseViewController(picker, animated: false, completion: {
@@ -355,10 +196,12 @@ class TestUIViewController: UIKitTestCase {
             ex.fulfill()
         }
         waitForExpectationsWithTimeout(10, handler: nil)
+
+        XCTAssertNil(rootvc.presentedViewController)
     }
 
     // can select data from picker
-    func test10() {
+    func test5() {
         let ex = expectationWithDescription("")
         let picker = UIImagePickerController()
         let promise: Promise<NSData> = rootvc.promiseViewController(picker, animated: false, completion: {
@@ -379,6 +222,34 @@ class TestUIViewController: UIKitTestCase {
             ex.fulfill()
         }
         waitForExpectationsWithTimeout(10, handler: nil)
+
+        XCTAssertNil(rootvc.presentedViewController)
+    }
+}
+
+class TestPromiseMailComposer: UIKitTestCase {
+    // cancelling mail composer cancels promise
+    func test7() {
+        let ex = expectationWithDescription("")
+        let mailer = MFMailComposeViewController()
+        let promise = rootvc.promiseViewController(mailer, animated: false, completion: {
+            after(0.05).then { _ -> Void in
+                let button = mailer.viewControllers[0].navigationItem.leftBarButtonItem!
+
+                let control: UIControl = UIControl()
+                control.sendAction(button.action, to: button.target, forEvent: nil)
+            }
+        })
+        promise.catch { _ -> Void in
+            XCTFail()
+        }
+        promise.catch(policy: CatchPolicy.AllErrors) { _ -> Void in
+            // seems necessary to give vc stack a bit of time
+            after(0.5).then(ex.fulfill)
+        }
+        waitForExpectationsWithTimeout(10, handler: nil)
+
+        XCTAssertNil(rootvc.presentedViewController)
     }
 }
 
@@ -388,15 +259,6 @@ class TestUIViewController: UIKitTestCase {
 
 private let dummy = 1_234_765
 
-private class MyViewController: UIViewController, Promisable {
-    @objc var promise: AnyObject! = nil
-
-    var appeared = false
-
-    private override func viewDidAppear(animated: Bool) {
-        appeared = true
-    }
-}
 
 class UIKitTestCase: XCTestCase {
     var rootvc: UIViewController {
@@ -431,4 +293,15 @@ private func find<T>(view: UIView, type: AnyClass) -> T! {
         }
     }
     return nil
+}
+
+
+extension XCTestCase {
+    func tester(_ file : String = __FILE__, _ line : Int = __LINE__) -> KIFUITestActor {
+        return KIFUITestActor(inFile: file, atLine: line, delegate: self)
+    }
+
+    func system(_ file : String = __FILE__, _ line : Int = __LINE__) -> KIFSystemTestActor {
+        return KIFSystemTestActor(inFile: file, atLine: line, delegate: self)
+    }
 }

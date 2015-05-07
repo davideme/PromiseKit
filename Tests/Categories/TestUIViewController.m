@@ -3,7 +3,7 @@
 #import "UIViewController+AnyPromise.h"
 @import XCTest;
 
-@interface TestUIViewControllerM: XCTestCase @end @implementation TestUIViewControllerM
+@interface TestAnyPromiseMailComposer: XCTestCase @end @implementation TestAnyPromiseMailComposer
 
 - (void)setUp {
     [UIApplication sharedApplication].keyWindow.rootViewController = [UIViewController new];

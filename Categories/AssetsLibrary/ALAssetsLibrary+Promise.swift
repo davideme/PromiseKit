@@ -38,6 +38,8 @@ extension UIViewController {
                     
                 }, failureBlock: sealant.resolve)
             }
+        }.finally {
+            self.dismissViewControllerAnimated(animated, completion: nil)
         }
     }
 }
