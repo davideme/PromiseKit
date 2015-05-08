@@ -15,9 +15,7 @@
 
 - (AnyPromise *)promiseViewController:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))block
 {
-    AnyPromise *promise;
-
-    [self presentViewController:vc animated:animated completion:block];
+    AnyPromise *promise = nil;
 
     if ([vc isKindOfClass:NSClassFromString(@"MFMailComposeViewController")]) {
         PMKGenericDelegate *delegate = [PMKGenericDelegate delegateWithPromise:&promise];
@@ -28,7 +26,7 @@
         [vc setValue:delegate forKey:@"messageComposeDelegate"];
     }
     else if ([vc isKindOfClass:NSClassFromString(@"UIImagePickerController")]) {
-        PMKGenericDelegate *delegate = [PMKGenericDelegate new];
+        PMKGenericDelegate *delegate = [PMKGenericDelegate delegateWithPromise:&promise];
         ((UIImagePickerController *)vc).delegate = delegate;
     }
     else if ([vc isKindOfClass:NSClassFromString(@"SLComposeViewController")]) {
@@ -50,6 +48,24 @@
         id err = [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:userInfo];
         return [AnyPromise promiseWithValue:err];
     }
+
+    if (!promise) {
+        if (![vc respondsToSelector:@selector(promise)]) {
+            id userInfo = @{NSLocalizedDescriptionKey: @"ViewController is not promisable"};
+            id err = [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:userInfo];
+            return [AnyPromise promiseWithValue:err];
+        }
+
+        promise = [vc valueForKey:@"promise"];
+
+        if (![promise isKindOfClass:[AnyPromise class]]) {
+            id userInfo = @{NSLocalizedDescriptionKey: @"The promise property is not of type AnyPromise"};
+            id err = [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:userInfo];
+            return [AnyPromise promiseWithValue:err];
+        }
+    }
+
+    [self presentViewController:vc animated:animated completion:block];
 
     promise.finally(^{
         //TODO can we be more specific?

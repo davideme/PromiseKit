@@ -1,23 +1,26 @@
-PromiseKit 2
-============
+Modern development is highly asynchronous: isn’t it about time we had tools that made programming asynchronously powerful, easy and delightful?
 
-PromiseKit 2 is readying for release.
+```swift
+UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 
-Goals
-=====
-* Promises that can cross objective C and Swift without any compromises to Swift.
-* Even more elegant syntax
-* Easier Swift promises that compromise to the compiler to some extent
-* Better modularity for Carthage where categories are not built into the default xcodeproj framework
-* Higher performance through appropriate zalgo usage
-* Simpler code in the library itself
+when(fetchImage(), getLocation()).then { img, location in
+    self.imageView.image = img;
+    self.label.text = "Buy your cat a house in \(location)"
+}.finally {
+    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+}
+```
 
-MUSTDO
-======
+TODO
+====
+
+* consider NSDebugDescription in various places like the JSON stuff does. Then provide a UIAlertView showError extension that can print that to the console for devs to see or something. The extension of course can do a bunch of other useful stuff
 
 * can test location manager in simulator now as added the entitlements for it, can also just bundle the gpx so that it always locates too!
 * inspect and validate all category method names, objc versions should always start with promise, swift version should be pruned on WithCompletionHandler suffix
 * objc is still important, make it feature parity with swift
+
+* What happens with an AnyPromise that is PMKManifolded over to Swift?
 
 * Reconsider excluding dispatch_promise for swift at least, as it makes this pattern possible:
 
@@ -107,3 +110,41 @@ Cancellation is only ever triggered either by the user (that explicits chooses t
 The unhandler error handler is still called, but the default unhandled error handler does not log cancellations. Override it if you want them logged or something else.
 
 Recover **always** receives cancellations. It is up to you to detect the error is a cancellation (use the cancelled bool property) and then to decide if the cancellation can be recovered.
+
+
+
+promisekit.org
+====
+Have a objc/Swift tab OR when they differ, two mandatory columns side by side for examples AND documentation. Not sure how this will work for mobile though.
+
+101
+Homepage
+intro to promise is here
+Makes asynchronous patterns into synchronous(ish) patterns (use return example)
+
+Then
+Chaining
+Errors
+Cancellation
+including causing your own cancellation
+when
+finally
+
+102
+Dispatch Queues
+Error Recovery  (remember Swift recover always gets cancellations)
+Halting Chains
+Resolving with Tuples
+
+103
+Sealing Your Own Promises
+Retain Cycle Considerations
+Compatibility with PMK 1.x
+
+Patterns
+dispatch_promise to var in Swift
+Abstracting away asynchronicity
+
+Handbook
+Getting Started
+Pre iOS 7, Pre OS X 10.9

@@ -30,4 +30,12 @@
     }];
 }
 
++ (AnyPromise *)reverseGeocode:(CLLocation *)location {
+    return [[CLGeocoder new] reverseGeocode:location];
+}
+
++ (AnyPromise *)geocode:(id)input {
+    return [[CLGeocoder new] geocode:input];
+}
+
 @end

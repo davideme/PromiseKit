@@ -4,6 +4,9 @@
 typedef void (^PMKFulfiller)(id);
 typedef void (^PMKRejecter)(NSError *);
 
+typedef PMKFulfiller PMKPromiseFulfiller;
+typedef PMKRejecter PMKPromiseRejecter;
+
 #define PMKUnhandledExceptionError -1l
 #define PMKUnderlyingExceptionKey @"PMKUnderlyingExceptionKey"
 
@@ -102,11 +105,11 @@ PMKPromise *dispatch_promise_on(dispatch_queue_t q, id block);
 
 
 
-@interface PMKPromise (Pause)
-/**
- @param duration The duration in seconds to wait before resolving this promise.
- @return A promise that thens the duration it waited before resolving.
-*/
-+ (PMKPromise *)pause:(NSTimeInterval)duration;
-
-@end
+// @interface PMKPromise (Pause)
+// /**
+//  @param duration The duration in seconds to wait before resolving this promise.
+//  @return A promise that thens the duration it waited before resolving.
+// */
+// + (PMKPromise *)pause:(NSTimeInterval)duration;
+//
+// @end

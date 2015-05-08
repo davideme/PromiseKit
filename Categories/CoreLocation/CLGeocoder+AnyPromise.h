@@ -37,4 +37,9 @@
 */
 - (AnyPromise *)geocode:(id)addressDictionaryOrAddressString;
 
+
+
++ (PMKPromise *)geocode:(id)input __attribute__((deprecated("Use -geocode:")));
++ (PMKPromise *)reverseGeocode:(CLLocation *)location __attribute__((deprecated("Use -reverseGeocode:")));
+
 @end
