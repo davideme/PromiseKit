@@ -105,6 +105,13 @@ static inline AnyPromise *__finally(AnyPromise *self, dispatch_queue_t queue, di
     };
 }
 
+- (id)value {
+    id result = [self valueForKey:@"__value"];
+    return [result isKindOfClass:[PMKArray class]]
+        ? result[0]
+        : result;
+}
+
 @end
 
 

@@ -1,9 +1,6 @@
 /**
- This is a compatability header for PMKPromise.h provided
- because #import <PromiseKit/Promise.h> would import PMKPromise
- in PromiseKit 1.x
- 
- It will be marked deprecated at PromiseKit 2.1 and removed by 2.3.
+ This header provides some compatibility for PromiseKit 1.x’s
+ PMKPromise class. It will eventually be deprecated.
 */
 
 #import <PromiseKit/AnyPromise.h>
@@ -18,18 +15,9 @@ typedef void (^PMKRejecter)(NSError *);
 typedef PMKFulfiller PMKPromiseFulfiller;
 typedef PMKRejecter PMKPromiseRejecter;
 
-#define PMKUnhandledExceptionError -1l
-#define PMKUnderlyingExceptionKey @"PMKUnderlyingExceptionKey"
+#define PMKUnderlyingExceptionKey NSUnderlyingErrorKey
 
 
-/**
- PMKPromise is provided for compatability with PromiseKit 1.x.
-
- It provides a few methods to ease porting, but is not identical
- to the previous version. Mostly you will get compile errors to
- help port, but you should note that exceptions are not caught in
- PromiseKit 2 (except within `+new:`).
-*/
 @interface PMKPromise (BackCompat)
 
 /**

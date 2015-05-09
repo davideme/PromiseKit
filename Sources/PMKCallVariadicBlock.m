@@ -47,7 +47,7 @@ id __PMKArrayWithCount(NSUInteger count, ...) {
 }
 
 
-static id PMKCallVariadicBlock(id frock, id result) {
+static inline id _PMKCallVariadicBlock(id frock, id result) {
     NSCAssert(frock, @"");
 
     NSMethodSignature *sig = NSMethodSignatureForBlock(frock);
@@ -109,5 +109,15 @@ static id PMKCallVariadicBlock(id frock, id result) {
             // else fall through!
         default:
             @throw PMKE(@"Unsupported method signature… Why not fork and fix?");
+    }
+}
+
+static id PMKCallVariadicBlock(id frock, id result) {
+    @try {
+        return _PMKCallVariadicBlock(frock, result);
+    } @catch (NSError *error) {
+        return error;
+    } @catch (NSString *reason) {
+        return [NSError errorWithDomain:PMKErrorDomain code:PMKUnexpectedError userInfo:@{NSLocalizedDescriptionKey: reason}];
     }
 }

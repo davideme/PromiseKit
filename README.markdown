@@ -18,18 +18,12 @@ TODO
 
 * can test location manager in simulator now as added the entitlements for it, can also just bundle the gpx so that it always locates too!
 * inspect and validate all category method names, objc versions should always start with promise, swift version should be pruned on WithCompletionHandler suffix
-* objc is still important, make it feature parity with swift
+
+* objc is still important, make it feature parity with swift (zalgo is missing)
 
 * What happens with an AnyPromise that is PMKManifolded over to Swift?
-
-* Reconsider excluding dispatch_promise for swift at least, as it makes this pattern possible:
-
-    class Something {
-        lazy var foo = dispatch_promise { return something() }
-    }
     
 * See if all existing pods that depend on PromiseKit lint against 2’s compatability layer
-* Split out compatability layer into subspec
 
 * Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
   * Do it properly by programmatically pressing buttons in simulator. Yes it's fragile but yes it actually tests the categories.

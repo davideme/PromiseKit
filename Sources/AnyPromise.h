@@ -108,6 +108,22 @@ typedef NS_ENUM(NSInteger, PMKCatchPolicy) {
 - (AnyPromise *(^)(dispatch_queue_t, dispatch_block_t))finallyOn;
 
 /**
+ The value of the asynchronous task this promise represents.
+
+ A promise has `nil` value if the asynchronous task it represents has not
+ finished. If the value is `nil` the promise is still `pending`.
+
+ @warning *Note* Our Swift variant’s value property returns nil if the
+ promise is rejected where AnyPromise will return the error object. This
+ fits with the pattern where AnyPromise is not strictly typed and is more
+ dynamic, but you should be aware of the distinction.
+
+ @return If `resolved`, the object that was used to resolve this promise;
+ if `pending`, nil.
+*/
+- (id)value;
+
+/**
  Creates a resolved promise.
 
  When developing your own promise systems, it is ocassionally useful to be able to return an already resolved promise.

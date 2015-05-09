@@ -6,7 +6,6 @@ FOUNDATION_EXPORT const unsigned char PromiseKitVersionString[];
 
 extern NSString * const PMKErrorDomain;
 
-#define PMKUnderlyingExceptionKey @"PMKUnderlyingExceptionKey"
 #define PMKFailingPromiseIndexKey @"PMKFailingPromiseIndexKey"
 #define PMKURLErrorFailingURLResponseKey @"PMKURLErrorFailingURLResponseKey"
 #define PMKURLErrorFailingDataKey @"PMKURLErrorFailingDataKey"

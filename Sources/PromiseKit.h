@@ -2,8 +2,10 @@
 #import <Foundation/NSDate.h>
 #import <Foundation/NSObject.h>
 #import <PromiseKit/AnyPromise.h>
+#import <PromiseKit/PMKPromise.h>
 #import <PromiseKit/Swift.h>
 #import <PromiseKit/Umbrella.h>
+
 
 
 /**
@@ -18,6 +20,7 @@
     });
 */
 extern AnyPromise *PMKAfter(NSTimeInterval duration);
+
 
 
 /**
@@ -46,6 +49,7 @@ extern AnyPromise *PMKAfter(NSTimeInterval duration);
 extern AnyPromise *PMKWhen(id input);
 
 
+
 /**
  Creates a new promise that resolves only when all provided promises have resolved.
 
@@ -72,6 +76,7 @@ extern AnyPromise *PMKWhen(id input);
 AnyPromise *PMKJoin(NSArray *promises);
 
 
+
 /**
  Literally hangs this thread until the promise has resolved.
  
@@ -84,6 +89,7 @@ AnyPromise *PMKJoin(NSArray *promises);
  @warning T SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NO
 */
 extern id PMKHang(AnyPromise *promise);
+
 
 
 typedef void (^PMKUnhandledErrorHandler)(NSError *);
@@ -99,6 +105,7 @@ typedef void (^PMKUnhandledErrorHandler)(NSError *);
  @return The previous unhandled error handler.
 */
 extern PMKUnhandledErrorHandler PMKSetUnhandledErrorHandler(PMKUnhandledErrorHandler handler);
+
 
 
 /**
@@ -120,6 +127,7 @@ extern PMKUnhandledErrorHandler PMKSetUnhandledErrorHandler(PMKUnhandledErrorHan
  @see dispatch_async
 */
 extern AnyPromise *dispatch_promise(id block);
+
 
 
 /**

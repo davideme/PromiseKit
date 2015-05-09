@@ -25,8 +25,11 @@ static inline NSError *dummyError() {
 + (PMKPromise *)when:(id)input;
 + (PMKPromise *)join:(id)input;
 + (PMKPromise *)hang:(id)input;
-+ (void)setUnhandledErrorHandler:(id)handler;
 - (BOOL)resolved;
+@end
+
+@interface PMKPromise (XP)
++ (void)setUnhandledErrorHandler:(id)handler;
 @end
 
 @implementation PMKPromise (BackCompat2)
@@ -41,9 +44,6 @@ static inline NSError *dummyError() {
 }
 + (PMKPromise *)hang:(id)input {
     return PMKHang(input);
-}
-+ (void)setUnhandledErrorHandler:(id)handler {
-    PMKSetUnhandledErrorHandler(handler);
 }
 - (BOOL)resolved {
     return !self.pending && ![self.value isKindOfClass:[NSError class]];
@@ -103,10 +103,10 @@ static inline NSError *dummyError() {
         f(@2);
     }];
     promise.then(^{
-        @throw @3;
+        @throw @"3";
     }).catch(^(NSError *e){
         [ex1 fulfill];
-        XCTAssertEqualObjects(@3, e.userInfo[PMKUnderlyingExceptionKey]);
+        XCTAssertEqualObjects(@"3", e.localizedDescription);
     });
     promise.catch(^{
         XCTFail();
@@ -121,7 +121,7 @@ static inline NSError *dummyError() {
     AnyPromise *promise = [PMKPromise new:^(void (^f)(id), id r){
         f(@4);
     }].then(^{
-        @throw @4;
+        @throw @"4";
     });
     promise.then(^{
         XCTFail();
@@ -140,9 +140,9 @@ static inline NSError *dummyError() {
         f(@5);
     }].then(^(id ii){
         XCTAssertEqual(5, [ii intValue]);
-        @throw ii;
+        @throw [ii description];
     }).catch(^(NSError *e){
-        XCTAssertEqualObjects(e.userInfo[PMKUnderlyingExceptionKey], @5);
+        XCTAssertEqualObjects(e.localizedDescription, @"5");
         [ex1 fulfill];
     });
 
@@ -155,12 +155,12 @@ static inline NSError *dummyError() {
     [PMKPromise new:^(void (^f)(id), id r){
         f(@5);
     }].then(^{
-        @throw @5;
+        @throw @"5";
     }).then(^{
         //NOOP
     }).catch(^(NSError *e){
         [ex1 fulfill];
-        XCTAssertEqualObjects(e.userInfo[PMKUnderlyingExceptionKey], @5);
+        XCTAssertEqualObjects(e.localizedDescription, @"5");
     });
 
     [self waitForExpectationsWithTimeout:2 handler:nil];
@@ -296,39 +296,36 @@ static inline NSError *dummyError() {
     XCTAssertEqual(x, 5);
 }
 
-// - (void)test_13_then_returns_recursive_promises_that_fails {
-//     __block BOOL resolved = NO;
-// #define URL
-//
-//     [NSURLConnection GET:URL].then(^{
-//         return [NSURLConnection GET:URL].then(^{
-//             return [NSURLConnection GET:URL].then(^{
-//                 return [NSURLConnection GET:URL].then(^{
-//                     @throw @1;
-//                 });
-//             });
-//         });
-//     }).then(^{
-//         XCTFail();
-//     }).catch(^(NSError *e){
-//         XCTAssertEqualObjects(e.userInfo[PMKUnderlyingExceptionKey], @1);
-//         resolved = YES;
-//     });
-//
-// #define wait(t) [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:t]]
-//     wait(0.2);
-//     XCTAssertTrue(resolved);
-// }
-//
+- (void)test_13_then_returns_recursive_promises_that_fails {
+    id ex = [self expectationWithDescription:@""];
+
+    PMKAfter(0.01).then(^{
+        return PMKAfter(0.01).then(^{
+            return PMKAfter(0.01).then(^{
+                return PMKAfter(0.01).then(^{
+                    @throw @"1";
+                });
+            });
+        });
+    }).then(^{
+        XCTFail();
+    }).catch(^(NSError *e){
+        XCTAssertEqualObjects(e.localizedDescription, @"1");
+        [ex fulfill];
+    });
+
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
 - (void)test_14_fail_returns_value {
     id ex1 = [self expectationWithDescription:@""];
 
     [PMKPromise new:^(void (^f)(id), id r){
         f(@1);
     }].then(^{
-        @throw @1;
+        @throw @"1";
     }).catch(^(NSError *e){
-        XCTAssertEqualObjects(e.userInfo[PMKUnderlyingExceptionKey], @1);
+        XCTAssertEqualObjects(e.localizedDescription, @"1");
         return @2;
     }).then(^(id o){
         XCTAssertEqualObjects(o, @2);
@@ -344,7 +341,7 @@ static inline NSError *dummyError() {
     [PMKPromise new:^(void (^f)(id), id r){
         f(@1);
     }].then(^{
-        @throw @1;
+        @throw @"1";
     }).catch(^{
         return [PMKPromise pause:0.01].then(^{
             return @123;
@@ -402,7 +399,7 @@ static inline NSError *dummyError() {
 - (void)test_21_recursive_when {
     id ex1 = [self expectationWithDescription:@""];
     id a = [PMKPromise pause:0.01].then(^{
-        @throw @NO;
+        @throw @"NO";
     });
     id b = [PMKPromise pause:0.02];
     id c = [PMKPromise when:@[a, b]];
@@ -410,7 +407,7 @@ static inline NSError *dummyError() {
         XCTFail();
     }).catch(^(NSError *e){
         XCTAssertEqualObjects(e.userInfo[PMKFailingPromiseIndexKey], @0);
-        XCTAssertEqualObjects(e.userInfo[PMKUnderlyingExceptionKey], @NO);
+        XCTAssertEqualObjects(e.userInfo[NSLocalizedDescriptionKey], @"NO");
         [ex1 fulfill];
     });
     [self waitForExpectationsWithTimeout:2 handler:nil];
@@ -509,10 +506,10 @@ static inline NSError *dummyError() {
 
     [PMKPromise pause:0.01].then(^{
         return [PMKPromise pause:0.02].then(^{
-            @throw @1;
+            @throw @"1";
         }).catch(^{
             return [PMKPromise pause:0.01].then(^{
-                @throw @1;
+                @throw @"1";
             });
         });
     }).then(^{
@@ -527,7 +524,7 @@ static inline NSError *dummyError() {
     id ex1 = [self expectationWithDescription:@""];
 
     [PMKPromise pause:0.01].then(^{
-        @throw @1;
+        @throw @"1";
     }).catch(^{
         return @YES;
     }).then(^{
@@ -568,7 +565,7 @@ PMKPromise *gcdreject() {
     gcdreject().catch(^{
         [ex1 fulfill];
         return [PMKPromise pause:0.01].then(^{
-            @throw @1;
+            @throw @"1";
         });
     }).then(^{
         XCTFail(@"1");
@@ -654,13 +651,13 @@ PMKPromise *gcdreject() {
     id ex1 = [self expectationWithDescription:@""];
 
     [PMKPromise new:^(PMKFulfiller _fulfiller, id r){
-        @throw @1;
+        @throw @"1";
         _fulfiller(@2);
     }].then(^{
         XCTFail();
     }).catch(^(NSError *error){
         [ex1 fulfill];
-        XCTAssertEqualObjects(error.userInfo[PMKUnderlyingExceptionKey], @1);
+        XCTAssertEqualObjects(error.localizedDescription, @"1");
     });
 
     [self waitForExpectationsWithTimeout:2 handler:nil];
@@ -856,7 +853,7 @@ PMKPromise *gcdreject() {
         }];
 
         [PMKPromise promiseWithValue:@1].then(^{
-            @throw @1;
+            @throw @"1";
         }).finally(^{
             [ex1 fulfill];
         });
@@ -871,7 +868,7 @@ PMKPromise *gcdreject() {
 
     [PMKPromise promiseWithValue:@1].then(^{
         XCTAssertEqual(++x, 1);
-        @throw @1;
+        @throw @"1";
     }).catch(^{
         XCTAssertEqual(++x, 2);
     }).then(^{
@@ -1066,7 +1063,7 @@ PMKPromise *gcdreject() {
     id ex1 = [self expectationWithDescription:@""];
 
     [PMKPromise new:^(id f, id r){
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"foo" userInfo:@{}];
+        @throw @"foo";
     }].catch(^{
         [ex1 fulfill];
     });
@@ -1190,7 +1187,7 @@ PMKPromise *gcdreject() {
         }].catch(^{
             return dispatch_promise(^{
                 return dispatch_promise(^{
-                    @throw @5;
+                    @throw @"5";
                 });
             });
         }).catch(^{
@@ -1198,23 +1195,6 @@ PMKPromise *gcdreject() {
         });
     }
 
-    [self waitForExpectationsWithTimeout:2 handler:nil];
-}
-
-- (void)test_71_throw_nil_rejects {
-    XCTestExpectation *ex1 = [self expectationWithDescription:@""];
-    XCTestExpectation *ex2 = [self expectationWithDescription:@""];
-
-    dispatch_promise(^{
-        @throw nil;
-    }).catch(^{
-        [ex1 fulfill];
-        return [PMKPromise new:^(id f, id r){
-            @throw nil;
-        }];
-    }).catch(^{
-        [ex2 fulfill];
-    });
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
@@ -1316,7 +1296,7 @@ PMKPromise *gcdreject() {
 
         [PMKPromise new:^(void(^fulfill)(id), void(^reject)(id)){
             dispatch_promise(^{
-                @throw @1;
+                @throw @"1";
             }).catch(reject);
         }].catch(^{
             [ex1 fulfill];
@@ -1340,7 +1320,7 @@ PMKPromise *gcdreject() {
 
         [PMKPromise new:^(void(^fulfill)(id), void(^reject)(id)){
             dispatch_promise(^{
-                @throw @1;
+                @throw @"1";
             }).catch(reject);
         }].finally(^{
             [ex1 fulfill];

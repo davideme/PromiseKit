@@ -7,40 +7,20 @@
 #endif
 
 
-
-static inline NSError *NSErrorFromNil() {
-    PMKLog(@"PromiseKit: Warning: Promise rejected with nil");
-    return [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:nil];
-}
-
-static inline NSError *NSErrorFromException(id exception) {
-    if (!exception)
-        return NSErrorFromNil();
-
-    id userInfo = @{
-        PMKUnderlyingExceptionKey: exception,
-        NSLocalizedDescriptionKey: [exception isKindOfClass:[NSException class]]
-            ? [exception reason]
-            : [exception description]
-    };
-    return [NSError errorWithDomain:PMKErrorDomain code:PMKUnhandledExceptionError userInfo:userInfo];
-}
-
-
-
 @implementation PMKPromise (BackCompat)
 
 + (instancetype)new:(void(^)(PMKFulfiller, PMKRejecter))block {
     return [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
         id rejecter = ^(id error){
             if (error == nil) {
-                error = NSErrorFromNil();
-            } else if (IsPromise(error) && ![error pending] && ![error value]) {
-                // this is safe, acceptable and (basically) valid
-            } else if (!IsError(error)) {
+                error = [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:nil];
+            } else if (IsPromise(error)) {
+                error = [error value];
+            }
+            if (!IsError(error)) {
                 id userInfo = @{
                     NSLocalizedDescriptionKey: [error description],
-                    PMKUnderlyingExceptionKey: error
+                    NSUnderlyingErrorKey: error
                 };
                 error = [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:userInfo];
             }
@@ -55,8 +35,10 @@ static inline NSError *NSErrorFromException(id exception) {
 
         @try {
             block(fulfiller, rejecter);
-        } @catch (id thrown) {
-            resolve(NSErrorFromException(thrown));
+        } @catch (NSString *reason) {
+            resolve([NSError errorWithDomain:PMKErrorDomain code:PMKUnexpectedError userInfo:@{NSLocalizedDescriptionKey: reason}]);
+        } @catch (NSError *error) {
+            resolve(error);
         }
     }];
 }
