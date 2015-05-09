@@ -14,7 +14,7 @@ when(fetchImage(), getLocation()).then { img, location in
 TODO
 ====
 
-* Finish tests
+* Finish tests, NSURLConnection is weak
 * See if all existing pods that depend on PromiseKit lint against 2’s compatability layer
 * Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
 

@@ -5,21 +5,19 @@
 @implementation MKDirections (PromiseKit)
 
 - (AnyPromise *)calculateDirections {
-    PMKResolver resolve;
-    AnyPromise *promise = [AnyPromise promiseWithResolver:&resolve];
-    [self calculateDirectionsWithCompletionHandler:^(id rsp, id err){
-        resolve(err ?: rsp);
+    return [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
+        [self calculateDirectionsWithCompletionHandler:^(id rsp, id err){
+            resolve(err ?: rsp);
+        }];
     }];
-    return promise;
 }
 
 - (AnyPromise *)calculateETA {
-    PMKResolver resolve;
-    AnyPromise *promise = [AnyPromise promiseWithResolver:&resolve];
-    [self calculateETAWithCompletionHandler:^(id rsp, id err){
-        resolve(err ?: rsp);
+    return [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
+        [self calculateETAWithCompletionHandler:^(id rsp, id err){
+            resolve(err ?: rsp);
+        }];
     }];
-    return promise;
 }
 
 + (AnyPromise *)promise:(MKDirectionsRequest *)request {

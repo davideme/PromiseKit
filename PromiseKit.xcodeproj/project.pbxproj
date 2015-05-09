@@ -146,7 +146,6 @@
 		638E0F181AEF171E0052E28F /* TestCoreLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FB1AEAC46E00BE97DD /* TestCoreLocation.swift */; };
 		638E0F191AEF171E0052E28F /* TestNSURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FC1AEAC46E00BE97DD /* TestNSURLConnection.m */; };
 		638E0F1A1AEF171E0052E28F /* TestNSTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FD1AEAC46E00BE97DD /* TestNSTask.swift */; };
-		638E0F1B1AEF171E0052E28F /* TestMapKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FE1AEAC46E00BE97DD /* TestMapKit.m */; };
 		638E0F1C1AEF171E0052E28F /* TestMapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FF1AEAC46E00BE97DD /* TestMapKit.swift */; };
 		638E0F1D1AEF171E0052E28F /* TestQuartzCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DF17001AEAC46E00BE97DD /* TestQuartzCore.m */; };
 		638E0F1E1AEF171E0052E28F /* TestSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = 637BF6111AEAC62400997C8B /* TestSocial.m */; };
@@ -199,7 +198,6 @@
 		63DF17131AEAC46E00BE97DD /* TestCoreLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FB1AEAC46E00BE97DD /* TestCoreLocation.swift */; };
 		63DF17151AEAC46E00BE97DD /* TestNSURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FC1AEAC46E00BE97DD /* TestNSURLConnection.m */; };
 		63DF17171AEAC46E00BE97DD /* TestNSTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FD1AEAC46E00BE97DD /* TestNSTask.swift */; };
-		63DF17191AEAC46E00BE97DD /* TestMapKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FE1AEAC46E00BE97DD /* TestMapKit.m */; };
 		63DF171B1AEAC46E00BE97DD /* TestMapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF16FF1AEAC46E00BE97DD /* TestMapKit.swift */; };
 		63DF171D1AEAC46E00BE97DD /* TestQuartzCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DF17001AEAC46E00BE97DD /* TestQuartzCore.m */; };
 		63DF171F1AEAC46E00BE97DD /* TestStoreKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DF17011AEAC46E00BE97DD /* TestStoreKit.m */; };
@@ -439,7 +437,6 @@
 		63DF16FB1AEAC46E00BE97DD /* TestCoreLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestCoreLocation.swift; path = Categories/TestCoreLocation.swift; sourceTree = "<group>"; };
 		63DF16FC1AEAC46E00BE97DD /* TestNSURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestNSURLConnection.m; path = Categories/TestNSURLConnection.m; sourceTree = "<group>"; };
 		63DF16FD1AEAC46E00BE97DD /* TestNSTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestNSTask.swift; path = Categories/TestNSTask.swift; sourceTree = "<group>"; };
-		63DF16FE1AEAC46E00BE97DD /* TestMapKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestMapKit.m; path = Categories/TestMapKit.m; sourceTree = "<group>"; };
 		63DF16FF1AEAC46E00BE97DD /* TestMapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestMapKit.swift; path = Categories/TestMapKit.swift; sourceTree = "<group>"; };
 		63DF17001AEAC46E00BE97DD /* TestQuartzCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestQuartzCore.m; path = Categories/TestQuartzCore.m; sourceTree = "<group>"; };
 		63DF17011AEAC46E00BE97DD /* TestStoreKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestStoreKit.m; path = Categories/TestStoreKit.m; sourceTree = "<group>"; };
@@ -869,7 +866,6 @@
 				638DFF5D1AFAEB4700465598 /* TestNSNotificationCenter.swift */,
 				638DFF5E1AFAEB4700465598 /* TestNSObject.swift */,
 				63DF16FD1AEAC46E00BE97DD /* TestNSTask.swift */,
-				63DF16FE1AEAC46E00BE97DD /* TestMapKit.m */,
 				63DF16FF1AEAC46E00BE97DD /* TestMapKit.swift */,
 				63DF17001AEAC46E00BE97DD /* TestQuartzCore.m */,
 				63E2997D1AFDF28100921143 /* TestSLComposeViewController.m */,
@@ -1280,7 +1276,6 @@
 				6306C6BB1AF6CA8500392D37 /* NSObject+Promise.swift in Sources */,
 				638E0F1A1AEF171E0052E28F /* TestNSTask.swift in Sources */,
 				6302ACFA1AEF42F2001F0069 /* NSNotificationCenter+Promise.swift in Sources */,
-				638E0F1B1AEF171E0052E28F /* TestMapKit.m in Sources */,
 				638E0F1C1AEF171E0052E28F /* TestMapKit.swift in Sources */,
 				6302AD081AEF42F2001F0069 /* MKMapSnapshotter+AnyPromise.m in Sources */,
 				6302AD1C1AEF42F2001F0069 /* SKRequest+Promise.swift in Sources */,
@@ -1344,7 +1339,6 @@
 				63DF17111AEAC46E00BE97DD /* TestCoreLocation.m in Sources */,
 				63DF17151AEAC46E00BE97DD /* TestNSURLConnection.m in Sources */,
 				6302AD171AEF42F2001F0069 /* SLRequest+AnyPromise.m in Sources */,
-				63DF17191AEAC46E00BE97DD /* TestMapKit.m in Sources */,
 				6302AD1B1AEF42F2001F0069 /* SKRequest+AnyPromise.m in Sources */,
 				63DF171D1AEAC46E00BE97DD /* TestQuartzCore.m in Sources */,
 				636A44EE1AEC0F6700639777 /* TestSocial.m in Sources */,
