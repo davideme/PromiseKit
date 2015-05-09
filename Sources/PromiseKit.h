@@ -5,6 +5,102 @@
 #import <PromiseKit/Umbrella.h>
 
 
+/**
+ @return A new promise that resolves after the specified duration.
+
+ @parameter duration The duration in seconds to wait before this promise is resolve.
+
+ For example:
+
+    PMKAfter(1).then(^{
+        //…
+    });
+*/
+extern AnyPromise *PMKAfter(NSTimeInterval duration);
+
+
+/**
+ `when` is a mechanism for waiting more than one asynchronous task and responding when they are all complete.
+
+ `PMKWhen` accepts varied input. If an array is passed then when those promises fulfill, when’s promise fulfills with an array of fulfillment values. If a dictionary is passed then the same occurs, but when’s promise fulfills with a dictionary of fulfillments keyed as per the input.
+
+ Interestingly, if a single promise is passed then when waits on that single promise, and if a single non-promise object is passed then when fulfills immediately with that object. If the array or dictionary that is passed contains objects that are not promises, then these objects are considered fulfilled promises. The reason we do this is to allow a pattern know as "abstracting away asynchronicity".
+
+ If *any* of the provided promises reject, the returned promise is immediately rejected with that promise’s rejection error. The error’s `userInfo` object is supplemented with `PMKFailingPromiseIndexKey`.
+
+ For example:
+
+    PMKWhen(@[promise1, promise2]).then(^(NSArray *results){
+        //…
+    });
+
+ @param input The input upon which to wait before resolving this promise.
+
+ @return A promise that is resolved with either:
+
+  1. An array of values from the provided array of promises.
+  2. The value from the provided promise.
+  3. The provided non-promise object.
+*/
+extern AnyPromise *PMKWhen(id input);
+
+
+/**
+ Creates a new promise that resolves only when all provided promises have resolved.
+
+ Typically, you should use `PMKWhen`.
+
+ This promise is not rejectable.
+
+ For example:
+
+    PMKJoin(@[promise1, promise2]).then(^(NSArray *results, NSArray *values, NSArray *errors){
+        //…
+    });
+
+ @param promises An array of promises.
+
+ @return A promise that thens three parameters:
+
+  1) An array of mixed values and errors from the resolved input.
+  2) An array of values from the promises that fulfilled.
+  3) An array of errors from the promises that rejected or nil if all promises fulfilled.
+
+ @see when
+*/
+AnyPromise *PMKJoin(NSArray *promises);
+
+
+/**
+ Literally hangs this thread until the promise has resolved.
+ 
+ Do not use hang… unless you are testing, playing or debugging.
+ 
+ If you use it in production code I will literally and honestly cry like a child.
+ 
+ @return The resolved value of the promise.
+
+ @warning T SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NO
+*/
+extern id PMKHang(AnyPromise *promise);
+
+
+
+typedef void (^PMKUnhandledErrorHandler)(NSError *);
+/**
+ Sets the unhandled error handler.
+
+ If a promise is rejected and no catch handler is called in its chain,
+ this handler is called. The default handler logs the error.
+
+ @warning *Important* The provided handler is executed on an undefined
+ queue.
+ 
+ @return The previous unhandled error handler.
+*/
+extern PMKUnhandledErrorHandler PMKSetUnhandledErrorHandler(PMKUnhandledErrorHandler handler);
+
+
 
 #define PMKJSONDeserializationOptions ((NSJSONReadingOptions)(NSJSONReadingAllowFragments | NSJSONReadingMutableContainers))
 

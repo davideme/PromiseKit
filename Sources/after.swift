@@ -2,9 +2,9 @@ import Dispatch
 import Foundation.NSDate
 
 /**
- @return A new promise that resolves after the specified time has passed.
+ @return A new promise that resolves after the specified duration.
 
- @parameter duration The duration in seconds to wait before resolving this promise.
+ @parameter duration The duration in seconds to wait before this promise is resolve.
 
  For example:
 

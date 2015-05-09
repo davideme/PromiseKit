@@ -17,12 +17,12 @@
     }
 #endif
 
+#define IsError(o) [o isKindOfClass:[NSError class]]
+#define IsPromise(o) [o isKindOfClass:[AnyPromise class]]
+
 @interface AnyPromise (Swift)
 - (void)pipe:(void (^)(id))body;
 - (AnyPromise *)initWithBridge:(void (^)(PMKResolver))resolver;
 + (void)__consume:(id)obj;
-+ (id)__wrap:(id (^)(void))block;
+- (id)__value;
 @end
-
-#define IsError(o) [o isKindOfClass:[NSError class]]
-#define IsPromise(o) [o isKindOfClass:[AnyPromise class]]

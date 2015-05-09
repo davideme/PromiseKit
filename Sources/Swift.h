@@ -90,18 +90,10 @@ typedef struct _NSZone NSZone;
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
-@class NSError;
 
 SWIFT_CLASS("_TtC10PromiseKit10AnyPromise")
 @interface AnyPromise : NSObject
-+ (void)setUnhandledErrorHandler:(void (^ __nonnull)(NSError * __nonnull))handler;
-
-/// @return `YES` if the promise has not yet resolved.
 @property (nonatomic, readonly) BOOL pending;
-@end
-
-SWIFT_CLASS("_TtC10PromiseKit10PMKPromise")
-@interface PMKPromise : AnyPromise
 @end
 
 @interface NSError (SWIFT_EXTENSION(PromiseKit))

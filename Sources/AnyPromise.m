@@ -1,5 +1,5 @@
 #import "AnyPromise.h"
-#import "__AnyPromise.h"
+#import "AnyPromise+Private.h"
 #import "PMKCallVariadicBlock.m"
 
 NSString *const PMKErrorDomain = @"PMKErrorDomain";
@@ -36,10 +36,7 @@ static inline AnyPromise *__then(AnyPromise *self, dispatch_queue_t queue, id bl
         if (IsError(obj)) {
             resolve(obj);
         } else dispatch_async(queue, ^{
-            id rv = [[self class] __wrap:^{
-                return PMKCallVariadicBlock(block, obj);
-            }];
-            resolve(rv);
+            resolve(PMKCallVariadicBlock(block, obj));
         });
     });
 }
@@ -67,10 +64,7 @@ static inline AnyPromise *__catch(AnyPromise *self, BOOL includeCancellation, id
         if (IsError(obj) && (includeCancellation || ![obj cancelled])) {
             [[self class] __consume:obj];
             dispatch_async(dispatch_get_main_queue(), ^{
-                id rv = [[self class] __wrap:^{
-                    return PMKCallVariadicBlock(block, obj);
-                }];
-                resolve(rv);
+                resolve(PMKCallVariadicBlock(block, obj));
             });
         } else {
             resolve(obj);
@@ -93,11 +87,8 @@ static inline AnyPromise *__catch(AnyPromise *self, BOOL includeCancellation, id
 static inline AnyPromise *__finally(AnyPromise *self, dispatch_queue_t queue, dispatch_block_t block) {
     return AnyPromiseWhen(self, ^(id obj, PMKResolver resolve) {
         dispatch_async(queue, ^{
-            id rv = [[self class] __wrap:^id{
-                block();
-                return nil;
-            }];
-            resolve(rv);
+            block();
+            resolve(obj);
         });
     });
 }
@@ -112,13 +103,6 @@ static inline AnyPromise *__finally(AnyPromise *self, dispatch_queue_t queue, di
     return ^(dispatch_queue_t queue, dispatch_block_t block) {
         return __finally(self, queue, block);
     };
-}
-
-- (id)value {
-    id result = [self valueForKey:@"__value"];
-    return [result isKindOfClass:[PMKArray class]]
-        ? result[0]
-        : result;
 }
 
 @end

@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, PMKCatchPolicy) {
  
  @warning *Note* Cancellation errors are not caught.
  
- Note, since catch is a c++ keyword, this method is not availble in Objective-C++ files. Instead use catchWithPolicy.
+ @warning *Note* Since catch is a c++ keyword, this method is not availble in Objective-C++ files. Instead use catchWithPolicy.
 
  @see catchWithPolicy
 */
@@ -169,19 +169,6 @@ typedef NS_ENUM(NSInteger, PMKCatchPolicy) {
 */
 + (instancetype)promiseWithResolverBlock:(void (^)(PMKResolver resolve))resolverBlock;
 
-
-/**
- The value of the asynchronous task this promise represents.
-
- A promise has `nil` value until the asynchronous task it represents completes.
-
- @return If `fulfilled` the object that was used to resolve this promise;
- if pending, nil; if rejected, nil.
- 
- @warning *Important* The value implementation for PromiseKit 1.x incorrectly returned the rejected error if the promise was rejected. If you require this behavior still for porting a library @see PMKPromise.
-*/
-@property (nonatomic, readonly) id value;
-
 @end
 
 
@@ -237,63 +224,6 @@ typedef void (^PMKBooleanAdapter)(BOOL, NSError *);
 
 
 
-@interface AnyPromise (when)
-/**
- `when` is a mechanism for waiting more than one asynchronous task and responding when they are all complete.
-
- `when` accepts varied input. If an array is passed then when those promises fulfill, when’s promise fulfills with an array of fulfillment values. If a dictionary is passed then the same occurs, but when’s promise fulfills with a dictionary of fulfillments keyed as per the input.
- 
- Interestingly, if a single promise is passed then when waits on that single promise, and if a single non-promise object is passed then when fulfills immediately with that object. If the array or dictionary that is passed contains objects that are not promises, then these objects are considered fulfilled promises. The reason we do this is to allow a pattern know as "abstracting away asynchronicity".
-
- If *any* of the provided promises reject, the returned promise is immediately rejected with that promise’s rejection error.
-
- @param input The input upon which to wait before resolving this promise.
-
- @return A promise that is resolved with either:
-
-  1. An array of values from the provided array of promises.
-  2. The value from the provided promise.
-  3. The provided non-promise object.
-*/
-+ (instancetype)when:(id)input;
-@end
-
-@interface AnyPromise (join)
-/**
- Creates a new promise that resolves only when all provided promises have resolved.
-
- Typically, you should use `+when:`.
-
- This promise is not rejectable.
-
- @param promises An array of promises.
-
- @return A promise that thens three parameters:
-
-  1) An array of mixed values and errors from the resolved input.
-  2) An array of values from the promises that fulfilled.
-  3) An array of errors from the promises that rejected or nil if all promises fulfilled.
-
- @see when
-*/
-+ (instancetype)join:(NSArray *)promises;
-@end
-
-@interface AnyPromise (hang)
-/**
- Literally hangs this thread until the promise has resolved.
- 
- Do not use hang… unless you are testing, playing or debugging.
- 
- If you use it in production code I will literally and honestly cry like a child.
- 
- @warning T SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NOT SAFE. IT IS NO
- */
-+ (instancetype)hang:(AnyPromise *)promise;
-@end
-
-
-
 /**
  Whenever resolving a promise you may resolve with a tuple, eg.
  returning from a `then` or `catch` handler or resolving a new promise.
@@ -307,8 +237,3 @@ typedef void (^PMKBooleanAdapter)(BOOL, NSError *);
 #define PMKManifold(...) __PMKManifold(__VA_ARGS__, 3, 2, 1)
 #define __PMKManifold(_1, _2, _3, N, ...) __PMKArrayWithCount(N, _1, _2, _3)
 extern id __PMKArrayWithCount(NSUInteger, ...);
-
-
-#ifndef PMKNoBackCompat
-#import <PromiseKit/PMKPromise.h>
-#endif

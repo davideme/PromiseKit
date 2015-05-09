@@ -1,5 +1,16 @@
-#import <Foundation/NSDate.h>
+/**
+ This is a compatability header for PMKPromise.h provided
+ because #import <PromiseKit/Promise.h> would import PMKPromise
+ in PromiseKit 1.x
+ 
+ It will be marked deprecated at PromiseKit 2.1 and removed by 2.3.
+*/
+
 #import <PromiseKit/AnyPromise.h>
+
+
+#define PMKPromise AnyPromise
+
 
 typedef void (^PMKFulfiller)(id);
 typedef void (^PMKRejecter)(NSError *);
@@ -13,16 +24,13 @@ typedef PMKRejecter PMKPromiseRejecter;
 
 /**
  PMKPromise is provided for compatability with PromiseKit 1.x.
- 
- It derives AnyPromise but modifies its behaviour subtley:
- 
-  1) Exceptions are caught in handlers and `new:`.
-  2) `value` returns either resolution not just the fulfillment.
 
- Also we provide a number of 1.x functions that are not present or
- have been renamed in PromiseKit 2.
+ It provides a few methods to ease porting, but is not identical
+ to the previous version. Mostly you will get compile errors to
+ help port, but you should note that exceptions are not caught in
+ PromiseKit 2 (except within `+new:`).
 */
-@interface PMKPromise (objc)
+@interface PMKPromise (BackCompat)
 
 /**
  Create a new promise that is fulfilled or rejected with the provided
@@ -34,60 +42,24 @@ typedef PMKRejecter PMKPromiseRejecter;
  Don’t use this method if you already have promises! Instead, just
  return your promise.
 
- @param block The provided block is immediately executed, any exceptions that occur will be caught and cause the returned promise to be rejected.
-   - @param fulfill fulfills the returned promise with the provided value
-   - @param reject rejects the returned promise with the provided `NSError`
-
  Should you need to fulfill a promise but have no sensical value to use;
  your promise is a `void` promise: fulfill with `nil`.
 
  The block you pass is executed immediately on the calling thread.
+
+ @param block The provided block is immediately executed, any exceptions that occur will be caught and cause the returned promise to be rejected.
+
+  - @param fulfill fulfills the returned promise with the provided value
+  - @param reject rejects the returned promise with the provided `NSError`
 
  @return A new promise.
 
  @see http://promisekit.org/sealing-your-own-promises/
  @see http://promisekit.org/wrapping-delegation/
 */
-+ (instancetype)new:(void(^)(PMKFulfiller fulfill, PMKRejecter reject))block;
-
-/// @return `YES` if the promise has resolved (ie. is fulfilled or rejected) `NO` if it is pending.
-- (BOOL)resolved;
-
-/// @return `YES` if the promise is fulfilled, `NO` if it is rejected or pending.
-- (BOOL)fulfilled;
-
-/// @return `YES` if the promise is rejected, `NO` if it is fulfilled or pending.
-- (BOOL)rejected;
-
-@end
++ (instancetype)new:(void(^)(PMKFulfiller fulfill, PMKRejecter reject))block __attribute__((deprecated("Use +promiseWithResolverBlock:")));
 
 
-
-/**
- Executes the provided block on a background queue.
-
- dispatch_promise is a convenient way to start a promise chain where the
- first step needs to run synchronously on a background queue.
-
- @param block The block to be executed in the background. Returning an `NSError` will reject the promise, everything else (including void) fulfills the promise.
-
- @return A promise resolved with the provided block.
-
- @see dispatch_async
-*/
-PMKPromise *dispatch_promise(id block);
-
-/**
- Executes the provided block on the specified queue.
-
- @see dispatch_promise
- @see dispatch_async
-*/
-PMKPromise *dispatch_promise_on(dispatch_queue_t q, id block);
-
-
-
-@interface PMKPromise (Until)
 /**
  Loops until one or more promises have resolved.
 
@@ -99,17 +71,6 @@ PMKPromise *dispatch_promise_on(dispatch_queue_t q, id block);
 
  An example usage is an app starting up that must get data from the Internet before the main ViewController can be shown. You can `until` the poll Promise and in the catch handler decide if the poll should be reattempted or not, perhaps returning a `UIAlertView.promise` allowing the user to choose if they continue or not.
 */
-+ (PMKPromise *)until:(id(^)(void))blockReturningPromiseOrArrayOfPromises catch:(id)catchHandler;
++ (PMKPromise *)until:(id (^)(void))blockReturningPromises catch:(id)failHandler;
 
 @end
-
-
-
-// @interface PMKPromise (Pause)
-// /**
-//  @param duration The duration in seconds to wait before resolving this promise.
-//  @return A promise that thens the duration it waited before resolving.
-// */
-// + (PMKPromise *)pause:(NSTimeInterval)duration;
-//
-// @end

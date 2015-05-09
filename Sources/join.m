@@ -1,13 +1,13 @@
 #import "AnyPromise.h"
-#import "__AnyPromise.h"
+#import "AnyPromise+Private.h"
 
 @implementation AnyPromise (join)
 
-+ (AnyPromise *)join:(NSArray *)promises {
+AnyPromise *PMKJoin(NSArray *promises) {
     if (promises.count == 0)
-        return [self promiseWithValue:PMKManifold(promises, promises)];
+        return [AnyPromise promiseWithValue:PMKManifold(promises, promises)];
 
-    return [self promiseWithResolverBlock:^(PMKResolver resolve) {
+    return [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
         NSPointerArray *results = NSPointerArrayMake(promises.count);
 
         __block NSUInteger x = 0;

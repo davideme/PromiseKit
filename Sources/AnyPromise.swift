@@ -132,20 +132,8 @@ private func unbox(resolution: Resolution) -> AnyObject? {
         }
     }
 
-    @objc var ____value: AnyObject? {
-        if let resolution = state.get() {
-            return unbox(resolution)
-        } else {
-            return nil
-        }
-    }
-
     @objc var pending: Bool {
         return state.get() == nil
-    }
-
-    @objc class func __wrap(body: () -> AnyObject?) -> AnyObject? {
-        return body()
     }
 }
 
@@ -165,8 +153,3 @@ extension AnyPromise: DebugPrintable {
         return "AnyPromise: \(state)"
     }
 }
-
-
-
-@objc public class PMKPromise: AnyPromise
-{}

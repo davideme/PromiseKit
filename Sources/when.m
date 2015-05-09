@@ -1,30 +1,25 @@
 #import "AnyPromise.h"
-#import "__AnyPromise.h"
+#import "AnyPromise+Private.h"
 #import "Umbrella.h"
 
-@implementation AnyPromise (when)
-
-/**
- TODO document: PMKFailingPromiseIndexKey
-*/
-+ (AnyPromise *)when:(id)promises {
+AnyPromise *PMKWhen(id promises) {
     if ([promises isKindOfClass:[NSArray class]] || [promises isKindOfClass:[NSDictionary class]]) {
         if ([promises count] == 0)
-            return [self promiseWithValue:promises];
+            return [AnyPromise promiseWithValue:promises];
     } else if ([promises isKindOfClass:[AnyPromise class]]) {
         promises = @[promises];
     } else {
-        return [self promiseWithValue:promises];
+        return [AnyPromise promiseWithValue:promises];
     }
 
     PMKResolver resolve;
-    AnyPromise *rootPromise = [self promiseWithResolver:&resolve];
+    AnyPromise *rootPromise = [AnyPromise promiseWithResolver:&resolve];
     __block void (^fulfill)();
 
     __block NSInteger countdown = [promises count];
     void (^yield)(id, id, void(^)(id)) = ^(AnyPromise *promise, id key, void(^set)(id)) {
         if (![promise isKindOfClass:[AnyPromise class]])
-            promise = [self promiseWithValue:promise];
+            promise = [AnyPromise promiseWithValue:promise];
         [promise pipe:^(id value){
             if (!rootPromise.pending) {
                 // suppress “already resolved” log message
@@ -65,5 +60,3 @@
     
     return rootPromise;
 }
-
-@end

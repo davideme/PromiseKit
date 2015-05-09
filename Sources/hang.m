@@ -1,4 +1,5 @@
 #import "AnyPromise.h"
+#import "AnyPromise+Private.h"
 
 @implementation AnyPromise (hang)
 
@@ -20,7 +21,7 @@
         CFRelease(runLoopSource);
     }
 
-    return promise.value;
+    return promise.__value;
 }
 
 @end
