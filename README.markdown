@@ -14,14 +14,9 @@ when(fetchImage(), getLocation()).then { img, location in
 TODO
 ====
 
-* can test location manager in simulator now as added the entitlements for it, can also just bundle the gpx so that it always locates too!
-
+* Finish tests
 * See if all existing pods that depend on PromiseKit lint against 2’s compatability layer
-
-* Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
-  * Do it properly by programmatically pressing buttons in simulator. Yes it's fragile but yes it actually tests the categories.
 * Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
-* Fully document all methods in CorePromise
 
 POSTRELEASETODO
 ===============
@@ -57,7 +52,7 @@ NICETODO
 * Exceptions are not caught
 * iOS 7.0 minimum deployment target, OS X minimum is 10.9, but PMK1.5 still works for earlier
 * Promises can bridge between Swift and objc. Still different objects though (so Swift promises can be generic)
-
+* You can't @import PromiseKit; or at least you don't get all the functions that way.
 
 2 vs 1 RATIONALEs
 =================

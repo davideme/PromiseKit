@@ -2,7 +2,6 @@ import Foundation
 import PromiseKit
 import XCTest
 
-#if os(OSX)
 class TestNSTask: XCTestCase {
     func test1() {
         let ex = expectationWithDescription("")
@@ -40,4 +39,3 @@ class TestNSTask: XCTestCase {
         waitForExpectationsWithTimeout(10, handler: nil)
     }
 }
-#endif
