@@ -22,4 +22,12 @@
     return promise;
 }
 
++ (AnyPromise *)promise:(MKDirectionsRequest *)request {
+    return [[[MKDirections alloc] initWithRequest:request] calculateDirections];
+}
+
++ (AnyPromise *)promiseETA:(MKDirectionsRequest *)request {
+    return [[[MKDirections alloc] initWithRequest:request] calculateETA];
+}
+
 @end

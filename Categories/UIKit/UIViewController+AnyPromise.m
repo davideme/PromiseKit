@@ -50,7 +50,7 @@
     }
 
     if (!promise) {
-        if (![vc respondsToSelector:@selector(promise)]) {
+        if (![vc respondsToSelector:NSSelectorFromString(@"promise")]) {
             id userInfo = @{NSLocalizedDescriptionKey: @"ViewController is not promisable"};
             id err = [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:userInfo];
             return [AnyPromise promiseWithValue:err];

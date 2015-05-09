@@ -31,4 +31,9 @@
 */
 - (AnyPromise *)calculateETA;
 
+
+
++ (AnyPromise *)promise:(MKDirectionsRequest *)request __attribute__((deprecated("Use -calculateDirections")));
++ (AnyPromise *)promiseETA:(MKDirectionsRequest *)request __attribute__((deprecated("Use -calculateETA")));
+
 @end

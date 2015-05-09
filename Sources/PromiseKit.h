@@ -1,4 +1,5 @@
 #import <dispatch/queue.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSObject.h>
 #import <PromiseKit/AnyPromise.h>
 #import <PromiseKit/Swift.h>

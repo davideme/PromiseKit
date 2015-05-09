@@ -9,13 +9,14 @@ public func dispatch_promise<T>(on queue: dispatch_queue_t = dispatch_get_global
     }
 }
 
-public func dispatch_promise<T>(on queue: dispatch_queue_t = dispatch_get_global_queue(0, 0), body: () -> Promise<T>) -> Promise<T> {
-    return Promise { sealant in
-        dispatch_async(queue) {
-            body().pipe(sealant.handler)
-        }
-    }
-}
+// TODO Swift 1.2 thinks that usage of the following two is ambiguous
+//public func dispatch_promise<T>(on queue: dispatch_queue_t = dispatch_get_global_queue(0, 0), body: () -> Promise<T>) -> Promise<T> {
+//    return Promise { sealant in
+//        dispatch_async(queue) {
+//            body().pipe(sealant.handler)
+//        }
+//    }
+//}
 
 public func dispatch_promise<T>(on: dispatch_queue_t = dispatch_get_global_queue(0, 0), body: () -> (T!, NSError!)) -> Promise<T> {
     return Promise{ (sealant: Sealant) -> Void in
