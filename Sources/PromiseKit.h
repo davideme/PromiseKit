@@ -95,16 +95,18 @@ extern id PMKHang(AnyPromise *promise);
 /**
  Sets the unhandled error handler.
 
- If a promise is rejected and no catch handler is called in its chain,
- this handler is called. The default handler logs the error.
+ If a promise is rejected and no catch handler is called in its chain, the
+ provided handler is called. The default handler logs the error.
 
     PMKSetUnhandledErrorHandler(^(NSError *error){
         NSLog(@"Unhandled error: %@", error);
     });
 
- @warning *Important* The provided handler is executed on an undefined
- queue.
+ @warning *Important* The handler is executed on an undefined queue.
  
+ @warning *Important* Don’t use promises in your handler, or you risk an
+ infinite error loop.
+
  @return The previous unhandled error handler.
 */
 extern id PMKSetUnhandledErrorHandler(void (^handler)(NSError *));

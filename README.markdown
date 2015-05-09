@@ -14,15 +14,9 @@ when(fetchImage(), getLocation()).then { img, location in
 TODO
 ====
 
-* consider NSDebugDescription in various places like the JSON stuff does. Then provide a UIAlertView showError extension that can print that to the console for devs to see or something. The extension of course can do a bunch of other useful stuff
-
 * can test location manager in simulator now as added the entitlements for it, can also just bundle the gpx so that it always locates too!
 * inspect and validate all category method names, objc versions should always start with promise, swift version should be pruned on WithCompletionHandler suffix
 
-* objc is still important, make it feature parity with swift (zalgo is missing)
-
-* What happens with an AnyPromise that is PMKManifolded over to Swift?
-    
 * See if all existing pods that depend on PromiseKit lint against 2’s compatability layer
 
 * Test UIViewController.m, SLComposeViewController, MFMailViewController etc.
@@ -30,19 +24,19 @@ TODO
 * Wait for all pods that depend on PMK to merge and trunk push your dependency correction PRs
 * Fully document all methods in CorePromise
 
-* It's really weird that you can't finally after a catch (in Swift), but I'm not sure what to do about it.
-
-* Clean up callers for AnyPromise to Swift call throughs like setUnhandledErrorHandler
-
 POSTRELEASETODO
 ===============
 
 * Offer pre-built binaries of 1.x and 2.x including a static archive for iOS 7 people (if possible). Deprecate 1.x Swift version (remove it even, it was never official)
 * Provide example of providing promises for a library (if it's objc, provide AnyPromise, if Swift, then Promise<T>) don't feel obligated to provide both.
+    
 
 NICETODO
 ========
 
+
+* consider NSDebugDescription in various places like the JSON stuff does. Then provide a UIAlertView showError extension that can print that to the console for devs to see or something. The extension of course can do a bunch of other useful stuff
+* It's really weird that you can't finally after a catch (in Swift), but I'm not sure what to do about it.
 * Provide an example for every method.
 * Grab Promises A+ JS tests and bridge to them so we run those tests and not our rewritten in Swift version
 * Documentation has a complete index

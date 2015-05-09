@@ -16,10 +16,9 @@ public enum CatchPolicy {
  that promise, which  returns a promise, you can call `then` on that
  promise, et cetera.
 
- Promises start in a pending state: they have `nil` value. Promises
- *resolve* to become *fulfilled* or *rejected*. A rejected promise has an
- `NSError` for its value, a fulfilled promise has any other object as its
- value.
+ 0.2.4.6.8.0.2.4.6.8.0.2.4.6.8.0.2.4.6.8.0.2.4.6.8.0.2.4.6.8.0.2.4.6.8.0.2
+ Promises start in a pending state and *resolve* with a value to become
+ *fulfilled* or with an `NSError` to become rejected.
 
  @see [PromiseKit `then` Guide](http://promisekit.org/then/)
  @see [PromiseKit Chaining Guide](http://promisekit.org/chaining/)
@@ -27,22 +26,78 @@ public enum CatchPolicy {
 public class Promise<T> {
     let state: State
 
+    /**
+     Create a new pending promise.
+
+     Use this method when wrapping asynchronous systems that do *not* use
+     promises so that they can be involved in promise chains.
+
+     Don’t use this method if you already have promises! Instead, just return
+     your promise!
+
+     The closure you pass is executed immediately on the calling thread.
+
+        func fetchKitten() -> Promise<UIImage> {
+            return Promise { fulfill, reject in
+                KittenFetcher.fetchWithCompletionBlock({ img, err in
+                    if err == nil {
+                        fulfill(img)
+                    } else {
+                        reject(err)
+                    }
+                })
+            }
+        }
+
+     @param resolvers The provided closure is called immediately. Inside,
+     execute your asynchronous system, calling fulfill if it suceeds and
+     reject for any errors.
+
+     @return A new promise.
+
+     @warning *Note* If you are wrapping a delegate-based system, we recommend
+     to use instead: defer
+
+     @see http://promisekit.org/sealing-your-own-promises/
+     @see http://promisekit.org/wrapping-delegation/
+    */
     public convenience init(@noescape resolvers: (fulfill: (T) -> Void, reject: (NSError) -> Void) -> Void) {
         self.init(sealant: { sealant in
             resolvers(fulfill: sealant.resolve, reject: sealant.resolve)
         })
     }
 
+    /**
+     Create a new pending promise.
+
+     This initializer is convenient when wrapping asynchronous systems that
+     use common patterns. For example:
+
+        func fetchKitten() -> Promise<UIImage> {
+            return Promise { sealant in
+                KittenFetcher.fetchWithCompletionBlock(sealant.resolve)
+            }
+        }
+
+     @see Sealant
+     @see init(resolvers:)
+    */
     public init(@noescape sealant: (Sealant<T>) -> Void) {
         var resolve: ((Resolution) -> Void)!
         state = UnsealedState(resolver: &resolve)
         sealant(Sealant(body: resolve))
     }
 
+    /**
+     Create a new fulfilled promise.
+    */
     public init(_ value: T) {
         state = SealedState(resolution: .Fulfilled(value))
     }
 
+    /**
+     Create a new rejected promise.
+    */
     public init(_ error: NSError) {
         unconsume(error)
         state = SealedState(resolution: .Rejected(error))
@@ -58,6 +113,28 @@ public class Promise<T> {
         state = UnsealedState(resolver: &resolve)
         passthru(resolve)
     }
+
+    /**
+     defer is convenient for wrapping delegates or larger asynchronous systems.
+
+        class Foo: BarDelegate {
+            let (promise, fulfill, reject) = Promise<Int>.defer()
+    
+            func barDidFinishWithResult(result: Int) {
+                fulfill(result)
+            }
+    
+            func barDidError(error: NSError) {
+                reject(error)
+            }
+        }
+
+     @return A tuple consisting of:
+
+      1) A promise
+      2) A function that fulfills that promise
+      3) A function that rejects that promise
+    */
 
     public class func defer() -> (promise: Promise, fulfill: (T) -> Void, reject: (NSError) -> Void) {
         var sealant: Sealant<T>!
@@ -138,10 +215,14 @@ public class Promise<T> {
                 resolve(resolution)
             case .Fulfilled(let value):
                 contain_zalgo(q) {
-                    body(value as! T).pipe { obj in
+                    let anypromise = body(value as! T)
+                    anypromise.pipe { obj in
                         if let error = obj as? NSError {
                             resolve(.Rejected(error))
                         } else {
+                            // possibly the value of this promise is a PMKManifold, if so
+                            // calling the objc `value` method will return the first item.
+                            let obj: AnyObject? = anypromise.valueForKey("value")
                             resolve(.Fulfilled(obj))
                         }
                     }
@@ -168,7 +249,7 @@ public class Promise<T> {
     /**
      The provided closure is executed when this Promise is rejected.
 
-     Rejecting a promise cascades rejecting all subsequent promises (unless
+     Rejecting a promise cascades: rejecting all subsequent promises (unless
      recover is invoked) thus you will typically place your catch at the end
      of a chain. Often utility promises will not have a catch, instead
      delegating the error handling to the caller.
@@ -199,6 +280,10 @@ public class Promise<T> {
         }
     }
 
+    /**
+     The provided closure is executed when this Promise is rejected giving you
+     an opportunity to recover from the error and continue the promise chain.
+    */
     public func recover(on q: dispatch_queue_t = dispatch_get_main_queue(), _ body: (NSError) -> Promise<T>) -> Promise<T> {
         return Promise(when: self) { resolution, resolve in
             switch resolution {
@@ -237,7 +322,8 @@ public class Promise<T> {
     }
     
     /**
-     @return The value with which this promise was fulfilled; nil if this promise is not fulfilled.
+     @return The value with which this promise was fulfilled or nil if this
+     promise is not fulfilled.
     */
     public var value: T? {
         switch state.get() {
