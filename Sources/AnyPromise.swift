@@ -122,17 +122,29 @@ private func unbox(resolution: Resolution) -> AnyObject? {
         }
     }
 
-    @objc var __value: AnyObject? {
-        let resolution = state.get()
-        switch resolution {
-        case .Some(.Fulfilled):
-            return unbox(resolution!)
-        default:
+    /**
+     The value of the asynchronous task this promise represents.
+
+     A promise has `nil` value if the asynchronous task it represents has not
+     finished. If the value is `nil` the promise is still `pending`.
+
+     @warning *Note* Our Swift variant’s value property returns nil if the
+     promise is rejected where AnyPromise will return the error object. This
+     fits with the pattern where AnyPromise is not strictly typed and is more
+     dynamic, but you should be aware of the distinction.
+
+     @return If `resolved`, the object that was used to resolve this promise;
+     if `pending`, nil.
+    */
+    @objc public var value: AnyObject? {
+        if let resolution = state.get() {
+            return unbox(resolution)
+        } else {
             return nil
         }
     }
 
-    @objc var pending: Bool {
+    @objc public var pending: Bool {
         return state.get() == nil
     }
 }

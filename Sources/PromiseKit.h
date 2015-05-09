@@ -85,7 +85,6 @@ AnyPromise *PMKJoin(NSArray *promises);
 extern id PMKHang(AnyPromise *promise);
 
 
-
 typedef void (^PMKUnhandledErrorHandler)(NSError *);
 /**
  Sets the unhandled error handler.
@@ -99,6 +98,45 @@ typedef void (^PMKUnhandledErrorHandler)(NSError *);
  @return The previous unhandled error handler.
 */
 extern PMKUnhandledErrorHandler PMKSetUnhandledErrorHandler(PMKUnhandledErrorHandler handler);
+
+
+/**
+ Executes the provided block on a background queue.
+
+ dispatch_promise is a convenient way to start a promise chain where the
+ first step needs to run synchronously on a background queue.
+
+    dispatch_promise(^{
+        return md5(input);
+    }).then(^(NSString *md5){
+        NSLog(@"md5: %@", md5);
+    });
+
+ @param block The block to be executed in the background. Returning an `NSError` will reject the promise, everything else (including void) fulfills the promise.
+
+ @return A promise resolved with the return value of the provided block.
+
+ @see dispatch_async
+*/
+extern AnyPromise *dispatch_promise(id block);
+
+
+/**
+ Executes the provided block on the specified background queue.
+
+    dispatch_promise_on(myDispatchQueue, ^{
+        return md5(input);
+    }).then(^(NSString *md5){
+        NSLog(@"md5: %@", md5);
+    });
+
+ @param block The block to be executed in the background. Returning an `NSError` will reject the promise, everything else (including void) fulfills the promise.
+
+ @return A promise resolved with the return value of the provided block.
+
+ @see dispatch_promise
+*/
+extern AnyPromise *dispatch_promise_on(dispatch_queue_t queue, id block);
 
 
 

@@ -94,6 +94,7 @@ typedef struct _NSZone NSZone;
 SWIFT_CLASS("_TtC10PromiseKit10AnyPromise")
 @interface AnyPromise : NSObject
 @property (nonatomic, readonly) BOOL pending;
+@property (nonatomic, readonly) __nullable id value;
 @end
 
 @interface NSError (SWIFT_EXTENSION(PromiseKit))

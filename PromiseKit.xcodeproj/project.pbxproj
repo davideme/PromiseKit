@@ -91,6 +91,10 @@
 		63196AC01AFD8EF600555BCD /* Promise.h in Headers */ = {isa = PBXBuildFile; fileRef = 63196ABE1AFD8B7100555BCD /* Promise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		63196AC11AFD8F1300555BCD /* AnyPromise+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 63314AE01AEDDD0B0071B6F5 /* AnyPromise+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		63196AC21AFD8F1600555BCD /* AnyPromise+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 63314AE01AEDDD0B0071B6F5 /* AnyPromise+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		63196AC51AFD936300555BCD /* dispatch_promise.m in Sources */ = {isa = PBXBuildFile; fileRef = 63196AC31AFD936300555BCD /* dispatch_promise.m */; };
+		63196AC61AFD936300555BCD /* dispatch_promise.m in Sources */ = {isa = PBXBuildFile; fileRef = 63196AC31AFD936300555BCD /* dispatch_promise.m */; };
+		63196AC71AFD936300555BCD /* dispatch_promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63196AC41AFD936300555BCD /* dispatch_promise.swift */; };
+		63196AC81AFD936300555BCD /* dispatch_promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63196AC41AFD936300555BCD /* dispatch_promise.swift */; };
 		631FEA7F1AF28E4900ED9646 /* PMKPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 631FEA7E1AF28E4900ED9646 /* PMKPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		631FEA801AF28E4900ED9646 /* PMKPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 631FEA7E1AF28E4900ED9646 /* PMKPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		63314ADA1AEDDC070071B6F5 /* hang.m in Sources */ = {isa = PBXBuildFile; fileRef = 63314AD71AEDDC070071B6F5 /* hang.m */; };
@@ -355,6 +359,8 @@
 		630AC2EE1AE6AC0400A212AD /* OMGHTTPURLRQ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OMGHTTPURLRQ.framework; path = Carthage/Build/Mac/OMGHTTPURLRQ.framework; sourceTree = "<group>"; };
 		630F25F81AF17A8F00BE27FD /* PMKPromise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMKPromise.m; path = Sources/PMKPromise.m; sourceTree = "<group>"; };
 		63196ABE1AFD8B7100555BCD /* Promise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Promise.h; path = Sources/Promise.h; sourceTree = "<group>"; };
+		63196AC31AFD936300555BCD /* dispatch_promise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = dispatch_promise.m; path = Sources/dispatch_promise.m; sourceTree = "<group>"; };
+		63196AC41AFD936300555BCD /* dispatch_promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = dispatch_promise.swift; path = Sources/dispatch_promise.swift; sourceTree = "<group>"; };
 		631FEA7E1AF28E4900ED9646 /* PMKPromise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMKPromise.h; path = Sources/PMKPromise.h; sourceTree = "<group>"; };
 		63314AD71AEDDC070071B6F5 /* hang.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = hang.m; path = Sources/hang.m; sourceTree = "<group>"; };
 		63314AD81AEDDC070071B6F5 /* join.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = join.m; path = Sources/join.m; sourceTree = "<group>"; };
@@ -664,6 +670,8 @@
 			children = (
 				63A60E1F1AFD795B00C4E692 /* after.m */,
 				63075EBD1AD0EDB3002C46A0 /* after.swift */,
+				63196AC31AFD936300555BCD /* dispatch_promise.m */,
+				63196AC41AFD936300555BCD /* dispatch_promise.swift */,
 				63314AD71AEDDC070071B6F5 /* hang.m */,
 				63314AD81AEDDC070071B6F5 /* join.m */,
 				63075EC41AD10471002C46A0 /* race.swift */,
@@ -1349,11 +1357,13 @@
 				63F803C01AB87A9500E4DEE1 /* Promise.swift in Sources */,
 				639A12711AB9F941002E5C24 /* Promise+Properties.swift in Sources */,
 				63A1576B1ABB32EB0002A421 /* AnyPromise.swift in Sources */,
+				63196AC71AFD936300555BCD /* dispatch_promise.swift in Sources */,
 				63A157721ABB59D00002A421 /* AnyPromise.m in Sources */,
 				63A60E201AFD795B00C4E692 /* after.m in Sources */,
 				630F25F91AF17A8F00BE27FD /* PMKPromise.m in Sources */,
 				63075EC51AD10471002C46A0 /* race.swift in Sources */,
 				63075EBE1AD0EDB3002C46A0 /* after.swift in Sources */,
+				63196AC51AFD936300555BCD /* dispatch_promise.m in Sources */,
 				63314ADC1AEDDC070071B6F5 /* join.m in Sources */,
 				63314ADE1AEDDC070071B6F5 /* when.m in Sources */,
 				63BF9DD01AB9E4850049EA39 /* State.swift in Sources */,
@@ -1371,6 +1381,7 @@
 			files = (
 				63F803C41AB89A0F00E4DEE1 /* Promise.swift in Sources */,
 				639A12721AB9F997002E5C24 /* Promise+Properties.swift in Sources */,
+				63196AC81AFD936300555BCD /* dispatch_promise.swift in Sources */,
 				63A1576C1ABB34250002A421 /* AnyPromise.swift in Sources */,
 				63A157731ABB59D00002A421 /* AnyPromise.m in Sources */,
 				630F25FA1AF17BFE00BE27FD /* PMKPromise.m in Sources */,
@@ -1380,6 +1391,7 @@
 				63B6FE4A1ABB613500E1F4C2 /* Sealant.swift in Sources */,
 				63075EC61AD10471002C46A0 /* race.swift in Sources */,
 				635D0D7C1ADDB11400CC0406 /* ErrorUnhandler.swift in Sources */,
+				63196AC61AFD936300555BCD /* dispatch_promise.m in Sources */,
 				6388E19D1AD311000074D85B /* NSJSONFromData.swift in Sources */,
 				63BF9DD11AB9E5C60049EA39 /* State.swift in Sources */,
 				63075EC21AD0F097002C46A0 /* when.swift in Sources */,

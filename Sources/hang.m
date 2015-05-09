@@ -21,7 +21,7 @@
         CFRelease(runLoopSource);
     }
 
-    return promise.__value;
+    return promise.value;
 }
 
 @end

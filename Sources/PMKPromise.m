@@ -35,7 +35,7 @@ static inline NSError *NSErrorFromException(id exception) {
         id rejecter = ^(id error){
             if (error == nil) {
                 error = NSErrorFromNil();
-            } else if (IsPromise(error) && ![error pending] && ![error __value]) {
+            } else if (IsPromise(error) && ![error pending] && ![error value]) {
                 // this is safe, acceptable and (basically) valid
             } else if (!IsError(error)) {
                 id userInfo = @{
@@ -65,16 +65,16 @@ static inline NSError *NSErrorFromException(id exception) {
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
 
 + (PMKPromise *)until:(id (^)(void))blockReturningPromises catch:(id)failHandler {
-    return [PMKPromise new:^(PMKFulfiller fulfill, PMKRejecter reject) {
+    return [PMKPromise promiseWithResolverBlock:^(PMKResolver resolve) {
         __block void (^block)() = ^{
             AnyPromise *next = PMKWhen(blockReturningPromises());
             next.then(^(id o){
-                fulfill(o);
+                resolve(o);
                 block = nil;
             });
             next.catch(^(NSError *error){
                 [AnyPromise promiseWithValue:error].catch(failHandler).then(block).catch(^{
-                    reject(error);
+                    resolve(error);
                     block = nil;
                 });
             });

@@ -55,7 +55,7 @@ Pod::Spec.new do |s|
   s.subspec 'CorePromise' do |ss|
     hh = 'Sources/{AnyPromise,PromiseKit,Swift,Umbrella,PMKPromise,Promise}.h'
     
-    ss.source_files = 'Sources/*.{swift}', 'Sources/{AnyPromise,when,hang,join}.m', hh
+    ss.source_files = 'Sources/*.{swift}', 'Sources/{after,AnyPromise,dispatch_promise,hang,join,when}.m', hh
     ss.public_header_files = hh
     ss.private_header_files = 'Sources/__AnyPromise.h'
     ss.frameworks = 'Foundation'

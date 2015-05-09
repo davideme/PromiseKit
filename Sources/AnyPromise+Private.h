@@ -24,5 +24,4 @@
 - (void)pipe:(void (^)(id))body;
 - (AnyPromise *)initWithBridge:(void (^)(PMKResolver))resolver;
 + (void)__consume:(id)obj;
-- (id)__value;
 @end
