@@ -23,7 +23,7 @@
     [mf setToRecipients:@[@"mxcl@me.com"]];
 
     [rootvc promiseViewController:mf animated:NO completion:^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             UIBarButtonItem *button = [mf.viewControllers[0] navigationItem].leftBarButtonItem;
 
             ((void (*)(id, SEL))[button.target methodForSelector:button.action])(button.target, button.action);
@@ -32,7 +32,7 @@
         [ex fulfill];
     });
 
-    [self waitForExpectationsWithTimeout:1 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 @end
