@@ -147,17 +147,15 @@ private func unbox(resolution: Resolution) -> AnyObject? {
     @objc public var pending: Bool {
         return state.get() == nil
     }
-}
 
 
-
-extension AnyPromise {
     // because you can’t access top-level Swift functions in objc
-    @objc public class func setUnhandledErrorHandler(body: (NSError) -> Void) {
+    @objc class func setUnhandledErrorHandler(body: (NSError) -> Void) -> (NSError) -> Void {
+        let oldHandler = PMKUnhandledErrorHandler
         PMKUnhandledErrorHandler = body
+        return oldHandler
     }
 }
-
 
 
 extension AnyPromise: DebugPrintable {

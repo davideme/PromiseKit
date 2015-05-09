@@ -1,9 +1,7 @@
 #import "AnyPromise.h"
 #import "AnyPromise+Private.h"
 
-@implementation AnyPromise (hang)
-
-+ (id)hang:(AnyPromise *)promise {
+id PMKHang(AnyPromise *promise) {
     if (promise.pending) {
         static CFRunLoopSourceContext context;
 
@@ -23,5 +21,3 @@
 
     return promise.value;
 }
-
-@end

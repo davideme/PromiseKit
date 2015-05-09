@@ -33,9 +33,9 @@ static inline AnyPromise *fulfillLater() {
 @interface AnyPromiseTestSuite : XCTestCase @end @implementation AnyPromiseTestSuite
 
 - (void)tearDown {
-    [AnyPromise setUnhandledErrorHandler:^(NSError *error) {
+    PMKSetUnhandledErrorHandler(^(NSError *error) {
 
-    }];
+    });
 }
 
 - (void)test_01_resolve {
@@ -334,7 +334,7 @@ static inline AnyPromise *fulfillLater() {
     
     id a = fulfillLater().then(^{ return @345; });
     id b = fulfillLater().then(^{ return @345; });
-    [AnyPromise when:@[a, b]].then(^(NSArray *objs){
+    PMKWhen(@[a, b]).then(^(NSArray *objs){
         XCTAssertEqual(objs.count, 2ul);
         XCTAssertEqualObjects(objs[0], objs[1]);
         [ex1 fulfill];
@@ -348,8 +348,8 @@ static inline AnyPromise *fulfillLater() {
         return dummy();
     });
     id b = fulfillLater();
-    id c = [AnyPromise when:@[a, b]];
-    [AnyPromise when:c].then(^{
+    id c = PMKWhen(@[a, b]);
+    PMKWhen(c).then(^{
         XCTFail();
     }).catch(^(NSError *e){
         XCTAssertEqualObjects(e.userInfo[PMKFailingPromiseIndexKey], @0);
@@ -374,7 +374,7 @@ static inline AnyPromise *fulfillLater() {
     
     resolve(dummy());
     
-    [AnyPromise when:promise].then(^{
+    PMKWhen(promise).then(^{
         XCTFail();
     }).catch(^{
         [ex2 fulfill];
@@ -412,7 +412,7 @@ static inline AnyPromise *fulfillLater() {
     id ex1 = [self expectationWithDescription:@""];
     id a = fulfillLater().catch(^{});
     id b = fulfillLater();
-    [AnyPromise when:@[a, b]].then(^(NSArray *objs){
+    PMKWhen(@[a, b]).then(^(NSArray *objs){
         [ex1 fulfill];
     });
     [self waitForExpectationsWithTimeout:1 handler:nil];
@@ -583,7 +583,7 @@ static inline AnyPromise *fulfillLater() {
     id ex1 = [self expectationWithDescription:@""];
     
     AnyPromise *promise = [AnyPromise promiseWithValue:@"35"].then(^{ return nil; });
-    [AnyPromise when:@[fulfillLater().then(^{ return @1; }), [AnyPromise promiseWithValue:nil], promise]].then(^(NSArray *results){
+    PMKWhen(@[fulfillLater().then(^{ return @1; }), [AnyPromise promiseWithValue:nil], promise]).then(^(NSArray *results){
         XCTAssertEqual(results.count, 3ul);
         XCTAssertEqualObjects(results[1], [NSNull null]);
         [ex1 fulfill];
@@ -622,7 +622,7 @@ static inline AnyPromise *fulfillLater() {
     
     id p = fulfillLater();
     id v = @1;
-    [AnyPromise when:@[p, v]].then(^(NSArray *aa){
+    PMKWhen(@[p, v]).then(^(NSArray *aa){
         XCTAssertEqual(aa.count, 2ul);
         XCTAssertEqualObjects(aa[1], @1);
         [ex1 fulfill];
@@ -634,7 +634,7 @@ static inline AnyPromise *fulfillLater() {
 - (void)test_40_when_with_all_values {
     id ex1 = [self expectationWithDescription:@""];
     
-    [AnyPromise when:@[@1, @2]].then(^(NSArray *aa){
+    PMKWhen(@[@1, @2]).then(^(NSArray *aa){
         XCTAssertEqualObjects(aa[0], @1);
         XCTAssertEqualObjects(aa[1], @2);
         [ex1 fulfill];
@@ -648,7 +648,7 @@ static inline AnyPromise *fulfillLater() {
     
     id p = fulfillLater();
     id v = @1;
-    [AnyPromise when:@[p, v, p, v]].then(^(NSArray *aa){
+    PMKWhen(@[p, v, p, v]).then(^(NSArray *aa){
         XCTAssertEqual(aa.count, 4ul);
         XCTAssertEqualObjects(aa[1], @1);
         XCTAssertEqualObjects(aa[3], @1);
@@ -701,7 +701,7 @@ static inline AnyPromise *fulfillLater() {
     id ex1 = [self expectationWithDescription:@""];
     
     AnyPromise *promise = [AnyPromise promiseWithValue:@1].then(^{});
-    [AnyPromise when:@[promise, [AnyPromise promiseWithValue:@1]]].then(^(NSArray *stuff){
+    PMKWhen(@[promise, [AnyPromise promiseWithValue:@1]]).then(^(NSArray *stuff){
         XCTAssertEqual(stuff.count, 2ul);
         XCTAssertEqualObjects(stuff[0], [NSNull null]);
         [ex1 fulfill];
@@ -749,9 +749,9 @@ static inline AnyPromise *fulfillLater() {
         id ex1 = [self expectationWithDescription:@""];
         id ex2 = [self expectationWithDescription:@""];
         
-        [AnyPromise setUnhandledErrorHandler:^(NSError *error){
+        PMKSetUnhandledErrorHandler(^(NSError *error){
             [ex2 fulfill];
-        }];
+        });
         
         [AnyPromise promiseWithValue:@1].then(^{
             return dummy();
@@ -850,11 +850,11 @@ static inline AnyPromise *fulfillLater() {
     id ex1 = [self expectationWithDescription:@""];
     
     id promises = @{
-                    @1: @2,
-                    @2: @"abc",
-                    @"a": fulfillLater().then(^{ return @"HI"; })
-                    };
-    [AnyPromise when:promises].then(^(NSDictionary *dict){
+        @1: @2,
+        @2: @"abc",
+        @"a": fulfillLater().then(^{ return @"HI"; })
+    };
+    PMKWhen(promises).then(^(NSDictionary *dict){
         XCTAssertEqual(dict.count, 3ul);
         XCTAssertEqualObjects(dict[@1], @2);
         XCTAssertEqualObjects(dict[@2], @"abc");
@@ -868,7 +868,7 @@ static inline AnyPromise *fulfillLater() {
 - (void)test_56_empty_array_when {
     id ex1 = [self expectationWithDescription:@""];
     
-    [AnyPromise when:@[]].then(^(NSArray *array){
+    PMKWhen(@[]).then(^(NSArray *array){
         XCTAssertEqual(array.count, 0ul);
         [ex1 fulfill];
     });
@@ -879,7 +879,7 @@ static inline AnyPromise *fulfillLater() {
 - (void)test_57_empty_array_all {
     id ex1 = [self expectationWithDescription:@""];
     
-    [AnyPromise when:@[]].then(^(NSArray *array){
+    PMKWhen(@[]).then(^(NSArray *array){
         XCTAssertEqual(array.count, 0ul);
         [ex1 fulfill];
     });
@@ -1037,10 +1037,10 @@ static inline AnyPromise *fulfillLater() {
     @autoreleasepool {
         XCTestExpectation *ex = [self expectationWithDescription:@""];
         
-        [AnyPromise setUnhandledErrorHandler:^(NSError *error){
+        PMKSetUnhandledErrorHandler(^(NSError *error){
             XCTAssertEqualObjects(@"5", error.localizedDescription);
             [ex fulfill];
-        }];
+        });
         
         [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
             resolve(dummyWithCode(5));
@@ -1054,10 +1054,10 @@ static inline AnyPromise *fulfillLater() {
         XCTestExpectation *ex1 = [self expectationWithDescription:@"unhandler"];
         XCTestExpectation *ex2 = [self expectationWithDescription:@"initial catch"];
 
-        [AnyPromise setUnhandledErrorHandler:^(NSError *error){
+        PMKSetUnhandledErrorHandler(^(NSError *error){
             XCTAssertEqualObjects(@"5", error.localizedDescription);
             [ex1 fulfill];
-        }];
+        });
 
         [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
             resolve(dummyWithCode(5));
@@ -1075,9 +1075,9 @@ static inline AnyPromise *fulfillLater() {
     @autoreleasepool {
         XCTestExpectation *ex1 = [self expectationWithDescription:@""];
         
-        [AnyPromise setUnhandledErrorHandler:^(NSError *error){
+        PMKSetUnhandledErrorHandler(^(NSError *error){
             XCTFail();
-        }];
+        });
         
         [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
             resolve(dummyWithCode(5));
@@ -1103,11 +1103,11 @@ static inline AnyPromise *fulfillLater() {
         fulfiller = resolve;
     }];
     
-    [AnyPromise join:@[
+    PMKJoin(@[
         [AnyPromise promiseWithValue:[NSError errorWithDomain:@"dom" code:1 userInfo:nil]],
         promise,
         [AnyPromise promiseWithValue:[NSError errorWithDomain:@"dom" code:2 userInfo:nil]]
-    ]].then(^(NSArray *results, NSArray *values, NSArray *errors) {
+    ]).then(^(NSArray *results, NSArray *values, NSArray *errors) {
         NSUInteger cumv = 0;
         NSInteger cume = 0;
 
@@ -1127,10 +1127,10 @@ static inline AnyPromise *fulfillLater() {
 
 - (void)test_74_join_no_errors {
     XCTestExpectation *ex1 = [self expectationWithDescription:@""];
-    [AnyPromise join:@[
+    PMKJoin(@[
         [AnyPromise promiseWithValue:@1],
         [AnyPromise promiseWithValue:@2]
-    ]].then(^(NSArray *results, NSArray *values, NSArray *errors) {
+    ]).then(^(NSArray *results, NSArray *values, NSArray *errors) {
         XCTAssertEqualObjects(values, (@[@1, @2]));
         XCTAssertNil(errors);
         [ex1 fulfill];
@@ -1141,10 +1141,10 @@ static inline AnyPromise *fulfillLater() {
 
 - (void)test_75_join_no_success {
     XCTestExpectation *ex1 = [self expectationWithDescription:@""];
-    [AnyPromise join:@[
+    PMKJoin(@[
         [AnyPromise promiseWithValue:[NSError errorWithDomain:@"dom" code:1 userInfo:nil]],
         [AnyPromise promiseWithValue:[NSError errorWithDomain:@"dom" code:2 userInfo:nil]],
-    ]].then(^(NSArray *results, NSArray *values, NSArray *errors) {
+    ]).then(^(NSArray *results, NSArray *values, NSArray *errors) {
         XCTAssertEqualObjects(values, @[]);
         XCTAssertNotNil(errors);
         [ex1 fulfill];
@@ -1154,7 +1154,7 @@ static inline AnyPromise *fulfillLater() {
 
 - (void)test_76_join_fulfills_if_empty_input {
     XCTestExpectation *ex1 = [self expectationWithDescription:@""];
-    [AnyPromise join:@[]].then(^(id a, id b, id c){
+    PMKJoin(@[]).then(^(id a, id b, id c){
         XCTAssertEqualObjects(@[], a);
         XCTAssertEqualObjects(@[], b);
         XCTAssertNil(c);
@@ -1165,7 +1165,7 @@ static inline AnyPromise *fulfillLater() {
 
 - (void)test_77_hang {
     __block int x = 0;
-    id value = [AnyPromise hang:fulfillLater().then(^{ x++; return 1; })];
+    id value = PMKHang(fulfillLater().then(^{ x++; return 1; }));
     XCTAssertEqual(x, 1);
     XCTAssertEqualObjects(value, @1);
 }
@@ -1196,9 +1196,9 @@ static inline AnyPromise *fulfillLater() {
     @autoreleasepool {
         XCTestExpectation *ex1 = [self expectationWithDescription:@""];
         
-        [AnyPromise setUnhandledErrorHandler:^(NSError *error) {
+        PMKSetUnhandledErrorHandler(^(NSError *error) {
             XCTFail();
-        }];
+        });
         
         [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
             dispatch_promise(^{
@@ -1219,10 +1219,10 @@ static inline AnyPromise *fulfillLater() {
         
         __block BOOL ex1Fulfilled = NO;
 
-        [AnyPromise setUnhandledErrorHandler:^(NSError *error) {
+        PMKSetUnhandledErrorHandler(^(NSError *error) {
             XCTAssert(ex1Fulfilled);
             [ex2 fulfill];
-        }];
+        });
         
         [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
             dispatch_promise(^{

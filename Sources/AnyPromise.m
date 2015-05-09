@@ -144,3 +144,13 @@ static inline AnyPromise *__finally(AnyPromise *self, dispatch_queue_t queue, di
 }
 
 @end
+
+
+
+@interface AnyPromise (XP)
++ (PMKUnhandledErrorHandler)setUnhandledErrorHandler:(PMKUnhandledErrorHandler)handler;
+@end
+
+PMKUnhandledErrorHandler PMKSetUnhandledErrorHandler(PMKUnhandledErrorHandler handler) {
+    return [AnyPromise setUnhandledErrorHandler:handler];
+}

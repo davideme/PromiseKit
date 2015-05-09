@@ -1,4 +1,4 @@
-#import "Promise.h"
+#import "PMKPromise.h"
 #import "AnyPromise+Private.h"
 #import "PromiseKit.h"
 

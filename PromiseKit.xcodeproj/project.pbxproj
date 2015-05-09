@@ -95,6 +95,7 @@
 		63196AC61AFD936300555BCD /* dispatch_promise.m in Sources */ = {isa = PBXBuildFile; fileRef = 63196AC31AFD936300555BCD /* dispatch_promise.m */; };
 		63196AC71AFD936300555BCD /* dispatch_promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63196AC41AFD936300555BCD /* dispatch_promise.swift */; };
 		63196AC81AFD936300555BCD /* dispatch_promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63196AC41AFD936300555BCD /* dispatch_promise.swift */; };
+		63196AC91AFD9F6E00555BCD /* after.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A60E1F1AFD795B00C4E692 /* after.m */; };
 		631FEA7F1AF28E4900ED9646 /* PMKPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 631FEA7E1AF28E4900ED9646 /* PMKPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		631FEA801AF28E4900ED9646 /* PMKPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 631FEA7E1AF28E4900ED9646 /* PMKPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		63314ADA1AEDDC070071B6F5 /* hang.m in Sources */ = {isa = PBXBuildFile; fileRef = 63314AD71AEDDC070071B6F5 /* hang.m */; };
@@ -1354,24 +1355,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63F803C01AB87A9500E4DEE1 /* Promise.swift in Sources */,
-				639A12711AB9F941002E5C24 /* Promise+Properties.swift in Sources */,
-				63A1576B1ABB32EB0002A421 /* AnyPromise.swift in Sources */,
-				63196AC71AFD936300555BCD /* dispatch_promise.swift in Sources */,
-				63A157721ABB59D00002A421 /* AnyPromise.m in Sources */,
 				63A60E201AFD795B00C4E692 /* after.m in Sources */,
-				630F25F91AF17A8F00BE27FD /* PMKPromise.m in Sources */,
-				63075EC51AD10471002C46A0 /* race.swift in Sources */,
 				63075EBE1AD0EDB3002C46A0 /* after.swift in Sources */,
+				63A157721ABB59D00002A421 /* AnyPromise.m in Sources */,
+				63A1576B1ABB32EB0002A421 /* AnyPromise.swift in Sources */,
 				63196AC51AFD936300555BCD /* dispatch_promise.m in Sources */,
-				63314ADC1AEDDC070071B6F5 /* join.m in Sources */,
-				63314ADE1AEDDC070071B6F5 /* when.m in Sources */,
-				63BF9DD01AB9E4850049EA39 /* State.swift in Sources */,
-				63B6FE491ABB613500E1F4C2 /* Sealant.swift in Sources */,
-				63075EC11AD0F097002C46A0 /* when.swift in Sources */,
-				6388E19C1AD310F80074D85B /* NSJSONFromData.swift in Sources */,
+				63196AC71AFD936300555BCD /* dispatch_promise.swift in Sources */,
 				635D0D7B1ADDB11400CC0406 /* ErrorUnhandler.swift in Sources */,
 				63314ADA1AEDDC070071B6F5 /* hang.m in Sources */,
+				63314ADC1AEDDC070071B6F5 /* join.m in Sources */,
+				630F25F91AF17A8F00BE27FD /* PMKPromise.m in Sources */,
+				63F803C01AB87A9500E4DEE1 /* Promise.swift in Sources */,
+				639A12711AB9F941002E5C24 /* Promise+Properties.swift in Sources */,
+				6388E19C1AD310F80074D85B /* NSJSONFromData.swift in Sources */,
+				63075EC51AD10471002C46A0 /* race.swift in Sources */,
+				63B6FE491ABB613500E1F4C2 /* Sealant.swift in Sources */,
+				63BF9DD01AB9E4850049EA39 /* State.swift in Sources */,
+				63314ADE1AEDDC070071B6F5 /* when.m in Sources */,
+				63075EC11AD0F097002C46A0 /* when.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1379,23 +1380,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63196AC91AFD9F6E00555BCD /* after.m in Sources */,
+				63075EBF1AD0EDB3002C46A0 /* after.swift in Sources */,
+				63A157731ABB59D00002A421 /* AnyPromise.m in Sources */,
+				63A1576C1ABB34250002A421 /* AnyPromise.swift in Sources */,
+				63196AC61AFD936300555BCD /* dispatch_promise.m in Sources */,
+				63196AC81AFD936300555BCD /* dispatch_promise.swift in Sources */,
+				635D0D7C1ADDB11400CC0406 /* ErrorUnhandler.swift in Sources */,
+				63314ADB1AEDDC070071B6F5 /* hang.m in Sources */,
+				63314ADD1AEDDC070071B6F5 /* join.m in Sources */,
+				630F25FA1AF17BFE00BE27FD /* PMKPromise.m in Sources */,
 				63F803C41AB89A0F00E4DEE1 /* Promise.swift in Sources */,
 				639A12721AB9F997002E5C24 /* Promise+Properties.swift in Sources */,
-				63196AC81AFD936300555BCD /* dispatch_promise.swift in Sources */,
-				63A1576C1ABB34250002A421 /* AnyPromise.swift in Sources */,
-				63A157731ABB59D00002A421 /* AnyPromise.m in Sources */,
-				630F25FA1AF17BFE00BE27FD /* PMKPromise.m in Sources */,
-				63314ADF1AEDDC070071B6F5 /* when.m in Sources */,
-				63314ADD1AEDDC070071B6F5 /* join.m in Sources */,
-				63075EBF1AD0EDB3002C46A0 /* after.swift in Sources */,
-				63B6FE4A1ABB613500E1F4C2 /* Sealant.swift in Sources */,
-				63075EC61AD10471002C46A0 /* race.swift in Sources */,
-				635D0D7C1ADDB11400CC0406 /* ErrorUnhandler.swift in Sources */,
-				63196AC61AFD936300555BCD /* dispatch_promise.m in Sources */,
 				6388E19D1AD311000074D85B /* NSJSONFromData.swift in Sources */,
+				63075EC61AD10471002C46A0 /* race.swift in Sources */,
+				63B6FE4A1ABB613500E1F4C2 /* Sealant.swift in Sources */,
 				63BF9DD11AB9E5C60049EA39 /* State.swift in Sources */,
+				63314ADF1AEDDC070071B6F5 /* when.m in Sources */,
 				63075EC21AD0F097002C46A0 /* when.swift in Sources */,
-				63314ADB1AEDDC070071B6F5 /* hang.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

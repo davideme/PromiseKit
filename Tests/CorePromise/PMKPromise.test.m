@@ -8,6 +8,8 @@
 #pragma clang diagnostic ignored "-Wimplicit-retain-self"
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunreachable-code"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 
 static inline NSError *dummyWithCode(NSInteger code) {
@@ -17,6 +19,37 @@ static inline NSError *dummyWithCode(NSInteger code) {
 static inline NSError *dummyError() {
     return dummyWithCode(rand());
 }
+
+@interface PMKPromise (BackCompat2)
++ (PMKPromise *)pause:(NSTimeInterval)duration;
++ (PMKPromise *)when:(id)input;
++ (PMKPromise *)join:(id)input;
++ (PMKPromise *)hang:(id)input;
++ (void)setUnhandledErrorHandler:(id)handler;
+- (BOOL)resolved;
+@end
+
+@implementation PMKPromise (BackCompat2)
++ (PMKPromise *)pause:(NSTimeInterval)duration {
+    return PMKAfter(duration);
+}
++ (PMKPromise *)when:(id)input {
+    return PMKWhen(input);
+}
++ (PMKPromise *)join:(id)input {
+    return PMKJoin(input);
+}
++ (PMKPromise *)hang:(id)input {
+    return PMKHang(input);
+}
++ (void)setUnhandledErrorHandler:(id)handler {
+    PMKSetUnhandledErrorHandler(handler);
+}
+- (BOOL)resolved {
+    return !self.pending && ![self.value isKindOfClass:[NSError class]];
+}
+@end
+
 
 
 @interface PMKPromiseTestSuite : XCTestCase
