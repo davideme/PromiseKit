@@ -209,6 +209,10 @@
 		63DF17261AEAC46E00BE97DD /* TestUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF17041AEAC46E00BE97DD /* TestUIViewController.swift */; };
 		63E299721AFDC4CB00921143 /* TestUIImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E299711AFDC4CB00921143 /* TestUIImagePickerController.swift */; };
 		63E299741AFDC53300921143 /* TestMessageUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E299731AFDC53300921143 /* TestMessageUI.swift */; };
+		63E299791AFDCE5600921143 /* TestUIActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E299751AFDCE5600921143 /* TestUIActionSheet.m */; };
+		63E2997A1AFDCE5600921143 /* TestUIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E299761AFDCE5600921143 /* TestUIAlertView.m */; };
+		63E2997B1AFDCE5600921143 /* TestUIImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E299771AFDCE5600921143 /* TestUIImagePickerController.m */; };
+		63E2997C1AFDCE5600921143 /* TestUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E299781AFDCE5600921143 /* TestUIViewController.m */; };
 		63F803A91AB87A8200E4DEE1 /* Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F803A81AB87A8200E4DEE1 /* Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		63F803C01AB87A9500E4DEE1 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F803BF1AB87A9500E4DEE1 /* Promise.swift */; };
 		63F803C41AB89A0F00E4DEE1 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F803BF1AB87A9500E4DEE1 /* Promise.swift */; };
@@ -442,6 +446,10 @@
 		63DF17041AEAC46E00BE97DD /* TestUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestUIViewController.swift; path = Categories/TestUIViewController.swift; sourceTree = "<group>"; };
 		63E299711AFDC4CB00921143 /* TestUIImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestUIImagePickerController.swift; path = Categories/TestUIImagePickerController.swift; sourceTree = "<group>"; };
 		63E299731AFDC53300921143 /* TestMessageUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestMessageUI.swift; path = Categories/TestMessageUI.swift; sourceTree = "<group>"; };
+		63E299751AFDCE5600921143 /* TestUIActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestUIActionSheet.m; path = Categories/TestUIActionSheet.m; sourceTree = "<group>"; };
+		63E299761AFDCE5600921143 /* TestUIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestUIAlertView.m; path = Categories/TestUIAlertView.m; sourceTree = "<group>"; };
+		63E299771AFDCE5600921143 /* TestUIImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestUIImagePickerController.m; path = Categories/TestUIImagePickerController.m; sourceTree = "<group>"; };
+		63E299781AFDCE5600921143 /* TestUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestUIViewController.m; path = Categories/TestUIViewController.m; sourceTree = "<group>"; };
 		63F803A31AB87A8200E4DEE1 /* PromiseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PromiseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F803A71AB87A8200E4DEE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sources/Info.plist; sourceTree = "<group>"; };
 		63F803A81AB87A8200E4DEE1 /* Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Umbrella.h; path = Sources/Umbrella.h; sourceTree = SOURCE_ROOT; };
@@ -865,9 +873,13 @@
 				637BF6121AEAC62400997C8B /* TestSocial.swift */,
 				63DF17011AEAC46E00BE97DD /* TestStoreKit.m */,
 				63DF17021AEAC46E00BE97DD /* TestStoreKit.swift */,
+				63E299751AFDCE5600921143 /* TestUIActionSheet.m */,
 				638DFF591AFACC9400465598 /* TestUIActionSheet.swift */,
+				63E299761AFDCE5600921143 /* TestUIAlertView.m */,
 				638DFF5A1AFACC9400465598 /* TestUIAlertView.swift */,
+				63E299771AFDCE5600921143 /* TestUIImagePickerController.m */,
 				63E299711AFDC4CB00921143 /* TestUIImagePickerController.swift */,
+				63E299781AFDCE5600921143 /* TestUIViewController.m */,
 				63DF17041AEAC46E00BE97DD /* TestUIViewController.swift */,
 				636A44EF1AEC304300639777 /* bridge.h */,
 			);
@@ -1342,13 +1354,17 @@
 				63E299741AFDC53300921143 /* TestMessageUI.swift in Sources */,
 				638DFF5B1AFACC9400465598 /* TestUIActionSheet.swift in Sources */,
 				638DFF5C1AFACC9400465598 /* TestUIAlertView.swift in Sources */,
+				63E299791AFDCE5600921143 /* TestUIActionSheet.m in Sources */,
 				63E299721AFDC4CB00921143 /* TestUIImagePickerController.swift in Sources */,
 				63DF17261AEAC46E00BE97DD /* TestUIViewController.swift in Sources */,
 				6302AD3C1AEF4307001F0069 /* ALAssetsLibrary+Promise.swift in Sources */,
 				6302AD3D1AEF430E001F0069 /* MFMailComposeViewController+Promise.swift in Sources */,
+				63E2997A1AFDCE5600921143 /* TestUIAlertView.m in Sources */,
+				63E2997B1AFDCE5600921143 /* TestUIImagePickerController.m in Sources */,
 				6302AD3E1AEF430E001F0069 /* MFMessageComposeViewController+Promise.swift in Sources */,
 				6362D8B41AF8831200E9E0A2 /* SLComposeViewController+Promise.swift in Sources */,
 				6302AD311AEF4303001F0069 /* UIActionSheet+AnyPromise.m in Sources */,
+				63E2997C1AFDCE5600921143 /* TestUIViewController.m in Sources */,
 				6302AD321AEF4303001F0069 /* UIActionSheet+Promise.swift in Sources */,
 				6302AD341AEF4303001F0069 /* UIAlertView+AnyPromise.m in Sources */,
 				6302AD351AEF4303001F0069 /* UIAlertView+Promise.swift in Sources */,

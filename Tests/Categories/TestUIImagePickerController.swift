@@ -1,6 +1,8 @@
+import KIFFramework
 import PromiseKit
 import UIKit
 import XCTest
+
 
 class TestPromiseImagePickerController: UIKitTestCase {
 
@@ -87,11 +89,11 @@ class TestPromiseImagePickerController: UIKitTestCase {
                 let tv: UITableView = find(picker, UITableView.self)
                 tv.visibleCells()[1].tap()
                 return after(1.5)
-                }.then { _ -> Void in
-                    let vcs = picker.viewControllers
-                    let cv: UICollectionView = find(picker.viewControllers[1] as! UIViewController, UICollectionView.self)
-                    let cell = cv.visibleCells()[0] as! UICollectionViewCell
-                    cell.tap()
+            }.then { _ -> Void in
+                let vcs = picker.viewControllers
+                let cv: UICollectionView = find(picker.viewControllers[1] as! UIViewController, UICollectionView.self)
+                let cell = cv.visibleCells()[0] as! UICollectionViewCell
+                cell.tap()
             }
         })
         promise.then { img -> Void in
@@ -112,11 +114,11 @@ class TestPromiseImagePickerController: UIKitTestCase {
                 let tv: UITableView = find(picker, UITableView.self)
                 tv.visibleCells()[1].tap()
                 return after(1.5)
-                }.then { _ -> Void in
-                    let vcs = picker.viewControllers
-                    let cv: UICollectionView = find(picker.viewControllers[1] as! UIViewController, UICollectionView.self)
-                    let cell = cv.visibleCells()[0] as! UICollectionViewCell
-                    cell.tap()
+            }.then { _ -> Void in
+                let vcs = picker.viewControllers
+                let cv: UICollectionView = find(vcs[1] as! UIViewController, UICollectionView.self)
+                let cell = cv.visibleCells()[0] as! UICollectionViewCell
+                cell.tap()
             }
         })
         promise.then { data -> Void in

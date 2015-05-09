@@ -39,7 +39,7 @@ class TestUIActionSheet: UIKitTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
-    // single button UIAlertViews don't get considered cancelled
+    // single button UIActionSheets don't get considered cancelled
     func test3() {
         let ex = expectationWithDescription("")
 
@@ -54,7 +54,7 @@ class TestUIActionSheet: UIKitTestCase {
         waitForExpectationsWithTimeout(3, handler: nil)
     }
 
-    // single button UIAlertViews don't get considered cancelled unless the cancelIndex is set
+    // single button UIActionSheets don't get considered cancelled unless the cancelIndex is set
     func test4() {
         let ex = expectationWithDescription("")
 

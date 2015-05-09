@@ -15,6 +15,7 @@
 
 - (AnyPromise *)promiseViewController:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))block
 {
+    id vc2present = vc;
     AnyPromise *promise = nil;
 
     if ([vc isKindOfClass:NSClassFromString(@"MFMailComposeViewController")]) {
@@ -59,13 +60,16 @@
         promise = [vc valueForKey:@"promise"];
 
         if (![promise isKindOfClass:[AnyPromise class]]) {
-            id userInfo = @{NSLocalizedDescriptionKey: @"The promise property is not of type AnyPromise"};
+            id userInfo = @{NSLocalizedDescriptionKey: @"The promise property is nil or not of type AnyPromise"};
             id err = [NSError errorWithDomain:PMKErrorDomain code:PMKInvalidUsageError userInfo:userInfo];
             return [AnyPromise promiseWithValue:err];
         }
     }
 
-    [self presentViewController:vc animated:animated completion:block];
+    if (!promise.pending)
+        return promise;
+
+    [self presentViewController:vc2present animated:animated completion:block];
 
     promise.finally(^{
         //TODO can we be more specific?
