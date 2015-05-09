@@ -15,7 +15,6 @@ TODO
 ====
 
 * can test location manager in simulator now as added the entitlements for it, can also just bundle the gpx so that it always locates too!
-* inspect and validate all category method names, objc versions should always start with promise, swift version should be pruned on WithCompletionHandler suffix
 
 * See if all existing pods that depend on PromiseKit lint against 2’s compatability layer
 

@@ -3,6 +3,7 @@
 #import "UIViewController+AnyPromise.h"
 @import XCTest;
 
+
 @interface TestAnyPromiseMailComposer: XCTestCase @end @implementation TestAnyPromiseMailComposer
 
 - (void)setUp {
